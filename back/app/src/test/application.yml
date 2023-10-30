@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/Quizly
-    username: postgres
-    password: Joui-2002
+    url: jdbc:postgresql://localhost:5432/quizzly
+    username: quizzly
+    password: quizzly
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
