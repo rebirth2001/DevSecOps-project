@@ -1,0 +1,5 @@
+1. First time
+    run: $ npm install
+
+2. now start the server using the following command.
+    run: $ npm run dev
