@@ -1,9 +1,9 @@
 package com.example.app.controller;
 
-import com.example.app.auth.AuthenticationRequest;
-import com.example.app.auth.AuthenticationResponse;
+import com.example.app.http.AuthenticationRequest;
+import com.example.app.http.AuthenticationResponse;
 import com.example.app.service.AuthenticationService;
-import com.example.app.auth.RegisterRequest;
+import com.example.app.http.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +30,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(service.authenticate(request));
     }
 
-    @PostMapping("/sign-in")
+    @PostMapping("/sign-out")
     public ResponseEntity<AuthenticationResponse> signOut(
             @RequestBody AuthenticationRequest request
     ) {
