@@ -4,6 +4,7 @@ import com.example.app.http.AuthenticationRequest;
 import com.example.app.http.AuthenticationResponse;
 import com.example.app.service.AuthenticationService;
 import com.example.app.http.RegisterRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,9 +19,14 @@ public class AuthenticationController {
     private final AuthenticationService service;
     @PostMapping("/sign-up")
     public ResponseEntity<AuthenticationResponse> signUp(
-            @RequestBody RegisterRequest request
+            @RequestBody @Valid RegisterRequest request
     ) {
-        return ResponseEntity.ok(service.register(request));
+        var resp  = service.register(request);
+        if(resp.isError()){
+            return ResponseEntity.badRequest().body(resp);
+        }else{
+            return ResponseEntity.ok(resp);
+        }
     }
 
     @PostMapping("/sign-in")

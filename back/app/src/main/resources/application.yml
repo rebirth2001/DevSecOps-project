@@ -16,6 +16,7 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate.transaction.jta.platform: org.hibernate.engine.transaction.jta.platform.internal.BitronixJtaPlatform
+    open-in-view: false
 
 jwt:
   config:
