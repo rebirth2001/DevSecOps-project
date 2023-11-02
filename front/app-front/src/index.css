@@ -44,9 +44,14 @@
   display: block;
   z-index: -1;
  }
+ .start-button:hover{
+  color: #fff;
+  transition: 0,3;
+ }
  
  .start-button:hover::before {
   width: 9em;
+  color: #fff;
  }
  .title{
   font-size: 100px;
