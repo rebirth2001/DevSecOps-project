@@ -4,7 +4,7 @@ import { useState } from "react";
 import "./navbar.css";
 
 export default function NavBar() {
-  const links = [];
+ // const links = [];
 
   const [isToggled, toggle] = useState(false);
 
