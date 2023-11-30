@@ -76,14 +76,14 @@ export default function NavBar() {
           >
             <div className="mt-2 mr-2 lg:mt-0">
               <a href="/sign-in" className="btn btn-ghost">
-                <span className="relative text-sm font-semibold text-white">
+                <span className="relative flex h-11 w-full items-center justify-center px-6  sm:w-max">
                   {" "}
                   Sign In
                 </span>
               </a>
             </div>
             <div className="mt-2 lg:mt-0">
-              <a href="/register" className="btn btn-primary">
+              <a href="/sign-up" className="btn btn-primary">
                 <span className="relative text-sm font-semibold text-white">
                   {" "}
                   Get Started
