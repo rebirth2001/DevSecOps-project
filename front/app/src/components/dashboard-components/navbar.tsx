@@ -1,16 +1,25 @@
 import { useState } from "react";
 
-export default function NavBar() {
+type NavProps = {
+  setSideBarState: React.Dispatch<React.SetStateAction<boolean>>;
+  isOpen: boolean;
+};
+
+export default function NavBar(sideBarCntrl: NavProps) {
   let [dropDownOpen, setDropDown] = useState(false);
   return (
     <>
-      <div className="sticky top-0 z-40 mb-4">
+      <div className="sticky top-0 z-40">
         <div className="w-full h-20 px-6 bg-gray-100 border-b flex items-center justify-between">
           <div className="flex">
-
             {/* mobile ham menu */}
             <div className="inline-block lg:hidden flex items-center mr-4">
-              <button className="hover:text-blue-500 hover:border-white focus:outline-none navbar-burger">
+              <button
+                className="hover:text-blue-500 hover:border-white focus:outline-none navbar-burger"
+                onClick={() => {
+                  sideBarCntrl.setSideBarState(!sideBarCntrl.isOpen);
+                }}
+              >
                 <svg
                   className="h-5 w-5"
                   v-bind:style="{ fill: 'black' }"
@@ -53,12 +62,6 @@ export default function NavBar() {
               : "absolute bg-gray-100 border border-t-0 shadow-xl text-gray-700 rounded-b-lg w-48 bottom-10 right-0 mr-6 hidden"
           }
         >
-          <a href="#" className="block px-4 py-2 hover:bg-gray-200">
-            Account
-          </a>
-          <a href="#" className="block px-4 py-2 hover:bg-gray-200">
-            Settings
-          </a>
           <a href="#" className="block px-4 py-2 hover:bg-gray-200">
             Logout
           </a>
