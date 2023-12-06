@@ -1,7 +1,35 @@
 import LayoutMain from "../layouts/layout-main";
 import Container from "../components/containter";
+import FormInput from "../components/form/input";
+import { RegisterRequest, RegisterUser } from "../libs/user";
+import React, { useState } from "react";
 
 export default function SignUp() {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    /* sanitize data and show errors*/
+    /*... */
+    /* Send register request */
+    const registerData: RegisterRequest = {
+      username: username,
+      email: email,
+      password: password,
+      confirmPassword: confirmPassword,
+    };
+
+    console.log("Request sent to the server", registerData);
+
+    const success = await RegisterUser(registerData);
+    if (success) {
+      alert("Success");
+    } else {
+      alert("Failed");
+    }
+  };
   return (
     <LayoutMain>
       <div
@@ -17,63 +45,53 @@ export default function SignUp() {
             <h1 className="mb-4 text-3xl font-bold text-gray-900 text-center">
               Start making quizzes today!
             </h1>
-            <form action="/sign-up/submit" method="post">
-              <div className="py-2">
-                <label
-                  htmlFor="Email"
-                  className="text-sm font-semibold text-gray-800"
-                >
-                  Email
-                </label>
-                <input
-                  id="Email"
-                  type="email"
-                  name="email"
-                  placeholder="johndoe@example.com"
-                  required
-                  autoComplete="email"
-                  className="w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-800 rounded"
-                />
-              </div>
-              <div className="py-2">
-                <label
-                  htmlFor="Password"
-                  className="text-sm font-semibold text-gray-800"
-                >
-                  Password
-                </label>
-                <input
-                  id="Password"
-                  type="password"
-                  name="password"
-                  placeholder="password"
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-800 rounded"
-                />
-              </div>
-              <div className="py-2">
-                <label
-                  htmlFor="Confirm-Password"
-                  className="text-sm font-semibold text-gray-800"
-                >
-                  Confirm Password
-                </label>
-                <input
-                  id="Confirm-Password"
-                  type="password"
-                  placeholder="confirm password"
-                  name="confirmed-password"
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-800 rounded"
-                />
-              </div>
+            <form onSubmit={handleSubmit}>
+              <FormInput
+                label="Username"
+                type="text"
+                name="username"
+                placeholder="quiz_dady2002"
+                changeEventHandler={(event) => {
+                  setUsername(event.currentTarget.value);
+                }}
+                required
+              />
+              <FormInput
+                label="Email"
+                type="email"
+                name="email"
+                placeholder="johndoe@example.com"
+                changeEventHandler={(event) => {
+                  setEmail(event.currentTarget.value);
+                }}
+                required
+              />
+              <FormInput
+                label="Password"
+                type="password"
+                name="password"
+                placeholder="password"
+                changeEventHandler={(event) => {
+                  setPassword(event.currentTarget.value);
+                }}
+                required
+              />
+              <FormInput
+                label="Confirm Password"
+                type="password"
+                placeholder="confirm password"
+                name="confirmPassword"
+                changeEventHandler={(event) => {
+                  setConfirmPassword(event.currentTarget.value);
+                }}
+                required
+              />
               <div className="py-2 flex justify-center">
-                <button
+                <input
                   className=" w-full py-4 px-2 rounded bg-indigo-600 text-white hover:bg-indigo-700 font-bold text-lg"
                   type="submit"
-                >
-                  Sign up
-                </button>
+                  value={"Sign up"}
+                ></input>
               </div>
               <div className="py-2 flex justify-between w-full text-xs text-gray-500">
                 <p>

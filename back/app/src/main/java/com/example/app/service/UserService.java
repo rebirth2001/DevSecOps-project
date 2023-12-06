@@ -16,8 +16,7 @@ public class UserService {
 
     public Optional<User> createUser(RegisterRequest request){
         var user = User.builder()
-                .firstname(request.getFirstname())
-                .lastname(request.getLastname())
+                .username(request.getUsername())
                 .email(request.getEmail())
                 .passwordHash(request.getPassword())
                 .createdAt(LocalDateTime.now())
