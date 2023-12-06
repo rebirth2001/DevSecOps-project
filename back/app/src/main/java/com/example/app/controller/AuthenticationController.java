@@ -7,20 +7,19 @@ import com.example.app.http.RegisterRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthenticationService service;
+
     @PostMapping("/sign-up")
     public ResponseEntity<AuthenticationResponse> signUp(
             @RequestBody @Valid RegisterRequest request
     ) {
+        System.out.println("Calling Sing Up");
         var resp  = service.register(request);
         if(resp.isError()){
             return ResponseEntity.badRequest().body(resp);
