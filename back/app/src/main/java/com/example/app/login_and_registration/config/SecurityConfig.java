@@ -1,4 +1,4 @@
-package com.example.app.config;
+package com.example.app.login_and_registration.config;
 
 
 import lombok.RequiredArgsConstructor;

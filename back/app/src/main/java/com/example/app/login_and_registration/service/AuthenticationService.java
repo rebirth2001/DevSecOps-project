@@ -1,10 +1,10 @@
-package com.example.app.service;
+package com.example.app.login_and_registration.service;
 
 
 
-import com.example.app.http.AuthenticationRequest;
-import com.example.app.http.AuthenticationResponse;
-import com.example.app.http.RegisterRequest;
+import com.example.app.login_and_registration.http.AuthenticationRequest;
+import com.example.app.login_and_registration.http.AuthenticationResponse;
+import com.example.app.login_and_registration.http.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
