@@ -1,6 +1,5 @@
 import { PropsWithChildren, useState } from "react";
 import NavBar from "../components/dashboard-components/navbar";
-import AppFooter from "../components/footer/appfooter";
 import SideBar from "../components/dashboard-components/sidebar";
 
 export default function LayoutDashboard(props: PropsWithChildren) {
@@ -21,8 +20,6 @@ export default function LayoutDashboard(props: PropsWithChildren) {
           >
             <NavBar setSideBarState={setSideBarOpen} isOpen={sideBarOpen} />
             <div className="p-6 bg-gray-100 mb-20">{props.children}</div>
-
-            <AppFooter />
           </div>
         </div>
       </div>

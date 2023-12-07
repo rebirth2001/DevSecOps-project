@@ -4,6 +4,11 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import SignIn from "./pages/sign-in";
 import SignUp from "./pages/sign-up";
 import Dashboard from "./pages/dashboard";
+import QuizList from "./pages/quizList";
+import QuizStart from "./pages/quizStart";
+import QuizContent from "./pages/quizContent";
+import Quiz from "./pages/quiz";
+import QuizResults from "./pages/quizResults";
 
 function App() {
   const router = createBrowserRouter([
@@ -22,6 +27,26 @@ function App() {
     {
       path: "/dashboard",
       element: <Dashboard />,
+    },
+    {
+      path: "/quizList",
+      element: <QuizList />,
+    },
+    {
+      path: "/quizStart",
+      element: <QuizStart />,
+    },
+    {
+      path: "/quizContent",
+      element: <QuizContent />,
+    },
+    {
+      path: "/quiz",
+      element: <Quiz />,
+    },
+    {
+      path: "/quizResults",
+      element: <QuizResults />,
     },
   ]);
   return (
