@@ -2,8 +2,10 @@ import LayoutMain from "../layouts/layout-main";
 import Container from "../components/containter";
 import { useRef, useState, useEffect } from "react";
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 export default function SignIn() {  
+  const navigate = useNavigate();
   const userRef = useRef<HTMLInputElement | null>(null);
   const errRef = useRef<HTMLDivElement | null>(null);
 
@@ -36,6 +38,7 @@ export default function SignIn() {
         setEmail('');
         setPassword('');
         setSuccess(true);
+        navigate("/dashboard")
     } else {
         console.log("9awad");
         setSuccess(false);
@@ -47,13 +50,6 @@ export default function SignIn() {
   }
 
   return (
-    <>
-      {success ? (
-        <section>
-          <h1>you are in</h1>
-          <br />
-        </section>
-      ) : (
         <LayoutMain>
           <div
             aria-hidden="true"
@@ -134,7 +130,5 @@ export default function SignIn() {
             </div>
           </Container>
         </LayoutMain>
-      )}
-    </>
-  );
+      )
 }
