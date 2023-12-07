@@ -27,14 +27,19 @@ export default function SignIn() {
       JSON.stringify({ email, password }),
       {
         headers: { 'Content-Type': 'application/json' },
-        withCredentials: true
+        withCredentials: false
       });
       console.log(JSON.stringify(response?.data));
       const accessToken = response?.data?.access_token;
       console.log(accessToken);
-      setEmail('');
-      setPassword('');
-      setSuccess(true);
+      if (accessToken !== null && accessToken !== "null") {
+        setEmail('');
+        setPassword('');
+        setSuccess(true);
+    } else {
+        console.log("9awad");
+        setSuccess(false);
+    }
     }
     catch (err) {
       console.error(err);
