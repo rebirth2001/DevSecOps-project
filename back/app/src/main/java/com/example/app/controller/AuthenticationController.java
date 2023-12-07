@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -32,7 +33,9 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> signIn(
             @RequestBody AuthenticationRequest request
     ) {
+        System.out.println("calling sign in");
         return ResponseEntity.ok(service.authenticate(request));
+
     }
 
     @PostMapping("/sign-out")
