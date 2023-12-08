@@ -1,9 +1,9 @@
-package com.example.app.controller;
+package com.example.app.login_and_registration.controller;
 
-import com.example.app.http.AuthenticationRequest;
-import com.example.app.http.AuthenticationResponse;
-import com.example.app.service.AuthenticationService;
-import com.example.app.http.RegisterRequest;
+import com.example.app.login_and_registration.http.AuthenticationRequest;
+import com.example.app.login_and_registration.http.AuthenticationResponse;
+import com.example.app.login_and_registration.service.AuthenticationService;
+import com.example.app.login_and_registration.http.RegisterRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

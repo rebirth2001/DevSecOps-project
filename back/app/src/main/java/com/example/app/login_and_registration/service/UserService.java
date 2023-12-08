@@ -1,8 +1,8 @@
-package com.example.app.service;
+package com.example.app.login_and_registration.service;
 
-import com.example.app.http.RegisterRequest;
-import com.example.app.model.User;
-import com.example.app.repository.UserRepository;
+import com.example.app.login_and_registration.http.RegisterRequest;
+import com.example.app.login_and_registration.model.User;
+import com.example.app.login_and_registration.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

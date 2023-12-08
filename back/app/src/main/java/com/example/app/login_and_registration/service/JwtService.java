@@ -1,8 +1,8 @@
-package com.example.app.service;
+package com.example.app.login_and_registration.service;
 
 
-import com.example.app.config.JWTConfig;
-import com.example.app.model.User;
+import com.example.app.login_and_registration.config.JWTConfig;
+import com.example.app.login_and_registration.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 

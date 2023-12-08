@@ -1,4 +1,4 @@
-package com.example.app.http;
+package com.example.app.login_and_registration.http;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

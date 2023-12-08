@@ -1,7 +1,7 @@
-package com.example.app.backup;
+package com.example.app.login_and_registration.backup;
 
 
-import com.example.app.repository.UserRepository;
+import com.example.app.login_and_registration.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
