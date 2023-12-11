@@ -1,5 +1,6 @@
 package com.example.app.login_and_registration.controller;
 
+
 import com.example.app.login_and_registration.http.RegistrationResponse;
 import com.example.app.login_and_registration.service.AuthenticationService;
 import com.example.app.login_and_registration.http.AuthenticationRequest;
