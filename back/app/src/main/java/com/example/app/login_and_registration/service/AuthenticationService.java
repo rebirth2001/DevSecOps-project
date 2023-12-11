@@ -5,6 +5,7 @@ package com.example.app.login_and_registration.service;
 import com.example.app.login_and_registration.http.AuthenticationRequest;
 import com.example.app.login_and_registration.http.AuthenticationResponse;
 import com.example.app.login_and_registration.http.RegisterRequest;
+import com.example.app.login_and_registration.http.RegistrationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +13,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,25 +27,28 @@ public class AuthenticationService {
     @Autowired
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationResponse register(RegisterRequest request) {
+    public RegistrationResponse register(RegisterRequest request) {
         // Confirm the 2 passwords matches
         if (!request.getPassword().equals(request.getConfirmPassword())) {
-            return AuthenticationResponse.builder()
+            List<String> errors = new ArrayList<>();
+            errors.add("Passwords don't match");
+            return RegistrationResponse.builder()
                     .isError(true)
-                    .errorMsg("Passwords don't match")
+                    .errors(errors)
                     .build();
         }
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         try {
             var user = userService.createUser(request).orElseThrow();
-            var jwtToken = jwtService.generateToken(user);
-            return AuthenticationResponse.builder()
-                    .accessToken(jwtToken)
+            return RegistrationResponse.builder()
+                    .isError(false)
                     .build();
         } catch (Exception e) {
-            return AuthenticationResponse.builder()
+            List<String> errors = new ArrayList<>();
+            errors.add("Email already in use");
+            return RegistrationResponse.builder()
                     .isError(true)
-                    .errorMsg("Email already in use")
+                    .errors(errors)
                     .build();
         }
     }
