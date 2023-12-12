@@ -41,6 +41,10 @@ function App() {
       element: <QuizContent />,
     },
     {
+      path: "/quizContent/:questionNumber",
+      element: <QuizContent/>,
+    },
+    {
       path: "/quiz",
       element: <Quiz />,
     },

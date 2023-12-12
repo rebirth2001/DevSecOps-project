@@ -1,5 +1,6 @@
 package com.example.app.startQuiz.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,10 +18,10 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String statement;
-
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "question")
     private List<Answer> answers;
     @ManyToOne
     @JoinColumn(name = "quiz_id")
+    @JsonIgnore
     private Quiz quiz;
 }
