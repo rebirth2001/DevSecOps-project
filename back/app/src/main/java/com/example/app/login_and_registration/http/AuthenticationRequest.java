@@ -1,5 +1,7 @@
 package com.example.app.login_and_registration.http;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthenticationRequest {
+    @Email(message = "Please use a valid email.")
     private String email;
+    @NotBlank(message = "Password must not be empty.")
     private String password;
 }

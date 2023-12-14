@@ -10,10 +10,10 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 public class RegisterRequest {
-    @NotBlank
-    @Size(min=4, message = "username must be at least 4 characters")
+    @NotBlank(message = "Username must not be empty.")
+    @Size(min=4, message = "Username must be at least 4 characters")
     private String username;
-    @Email(message = "this is not a valid mail")
+    @Email(message = "Please use a valid email")
     private String email;
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
