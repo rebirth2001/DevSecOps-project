@@ -33,13 +33,12 @@ public class AuthenticationController {
         if(bindingResult.hasErrors()) {
             List<String> errors = new ArrayList<>();
             for(FieldError error:bindingResult.getFieldErrors()){
-                errors.add(error.getField() + ":" + error.getDefaultMessage());
+                errors.add(error.getDefaultMessage());
             }
             RegistrationResponse errorResponse = RegistrationResponse.builder()
                             .errors(errors)
                                     .isError(true)
                                             .build();
-            System.out.println(errors);
             return ResponseEntity.badRequest().body(errorResponse);
         }
         var resp = service.register(request);
@@ -52,11 +51,27 @@ public class AuthenticationController {
 
     @PostMapping("/sign-in")
     public ResponseEntity<AuthenticationResponse> signIn(
-            @RequestBody AuthenticationRequest request
+            @RequestBody @Valid AuthenticationRequest request,
+            BindingResult bindingResult
     ) {
-        System.out.println("calling sign in");
-        return ResponseEntity.ok(service.authenticate(request));
+        if(bindingResult.hasErrors()) {
+            List<String> errors = new ArrayList<>();
+            for(FieldError error:bindingResult.getFieldErrors()){
+                errors.add(error.getDefaultMessage());
+            }
+            AuthenticationResponse errorResponse = AuthenticationResponse.builder()
+                    .errors(errors)
+                    .isError(true)
+                    .build();
+            return ResponseEntity.badRequest().body(errorResponse);
+        }
 
+        var resp = service.authenticate(request);
+        if (resp.isError()){
+            return ResponseEntity.badRequest().body(resp);
+        } else {
+            return ResponseEntity.ok(resp);
+        }
     }
 
     @PostMapping("/sign-out")

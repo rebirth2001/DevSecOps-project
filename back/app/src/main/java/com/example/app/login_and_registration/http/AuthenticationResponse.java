@@ -6,17 +6,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthenticationResponse {
-    @JsonProperty("access_token")
+    @JsonProperty("accessToken")
     private String accessToken;
-    @JsonProperty("refresh_token")
-    private String refreshToken;
-    @JsonProperty("error_message")
-    private String errorMsg;
-
+    @JsonProperty("errors")
+    private List<String> errors;
+    @JsonProperty("isError")
     private boolean isError;
 }

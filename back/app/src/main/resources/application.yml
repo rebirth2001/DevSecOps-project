@@ -20,5 +20,7 @@ spring:
 
 jwt:
   config:
-    secret: ad81fcba52342929672c0d8097c66e3f856db127798a02a890519b6fe79c19af
-    expiration: 60000
+    secret: ad81fcba52342929672c0d8097c66e3f856db127798a02a890519b6fe79c19af #must 32 characters please
+    expiration: 900000
+    header: Authorization
+    prefix: 'Bearer ' # don't remove the trailing space.
