@@ -38,35 +38,29 @@ public class User implements UserDetails {
         // You may need to customize this based on your application's role/authority logic
         return Collections.singleton((GrantedAuthority) () -> "ROLE_USER");
     }
-
     @Override
     public String getPassword() {
         return passwordHash;
     }
-
     @Override
     public String getUsername() {
         return username;
     }
-
     @Override
     public boolean isAccountNonExpired() {
         // Implement account expiration logic
         return true;
     }
-
     @Override
     public boolean isAccountNonLocked() {
         // Implement account locking logic
         return true;
     }
-
     @Override
     public boolean isCredentialsNonExpired() {
         // Implement credentials expiration logic
         return true;
     }
-
     @Override
     public boolean isEnabled() {
         // Implement account enabling/disabling logic
