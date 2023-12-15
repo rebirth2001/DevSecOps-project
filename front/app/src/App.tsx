@@ -5,10 +5,9 @@ import SignIn from "./pages/sign-in";
 import SignUp from "./pages/sign-up";
 import Dashboard from "./pages/dashboard";
 import QuizList from "./pages/quizList";
-import QuizStart from "./pages/quizStart";
-import QuizContent from "./pages/quizContent";
 import Quiz from "./pages/quiz";
 import QuizResults from "./pages/quizResults";
+import CreateQuiz from "./pages/createQuiz";
 
 function App() {
   const router = createBrowserRouter([
@@ -21,6 +20,10 @@ function App() {
       element: <SignIn />,
     },
     {
+      path: "/create-quiz",
+      element: <CreateQuiz/>
+    },
+    {
       path: "/sign-up",
       element: <SignUp />,
     },
@@ -31,18 +34,6 @@ function App() {
     {
       path: "/quizList",
       element: <QuizList />,
-    },
-    {
-      path: "/quizStart",
-      element: <QuizStart />,
-    },
-    {
-      path: "/quizContent",
-      element: <QuizContent />,
-    },
-    {
-      path: "/quizContent/:questionNumber",
-      element: <QuizContent/>,
     },
     {
       path: "/quiz",

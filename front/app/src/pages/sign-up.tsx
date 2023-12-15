@@ -1,9 +1,8 @@
 import LayoutMain from "../layouts/layout-main";
 import Container from "../components/containter";
 import FormInput from "../components/form/input";
-import { RegisterRequest, RegisterUser } from "../libs/user";
 import React, { useState } from "react";
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import axios, { AxiosError } from "axios";
 
 export default function SignUp() {

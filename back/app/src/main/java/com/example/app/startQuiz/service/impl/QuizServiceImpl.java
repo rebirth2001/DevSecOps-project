@@ -22,17 +22,14 @@ public class QuizServiceImpl implements QuizService {
     public List<Quiz> getAllQuize() {
         return quizRepository.findAll();
     }
-
     @Override
     public void saveQuiz(Quiz quiz) {
         quizRepository.save(quiz);
     }
-
     @Override
     public void deleteQuiz(Long id) {
         quizRepository.deleteById(id);
     }
-
     @Override
     public void modifyQuiz(Long id, Quiz updatedQuiz) {
         Quiz existingQuiz = quizRepository.findQuizById(id).orElse(null);

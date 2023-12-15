@@ -1,6 +1,7 @@
 package com.example.app.startQuiz.model;
 
 import com.example.app.participant.model.Participant;
+import com.example.app.startQuiz.DTO.QuestionDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
