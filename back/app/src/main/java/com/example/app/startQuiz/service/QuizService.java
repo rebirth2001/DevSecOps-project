@@ -1,5 +1,6 @@
 package com.example.app.startQuiz.service;
 
+import com.example.app.participant.model.Participant;
 import com.example.app.startQuiz.model.Answer;
 import com.example.app.startQuiz.model.Question;
 import com.example.app.startQuiz.model.Quiz;
@@ -18,4 +19,6 @@ public interface QuizService {
     Quiz getQuizById(Long id);
     Quiz addQuestionToQuiz(Long id, Question question);
     Quiz addAnswerToQuestion(Long quizId, Long quesionId, Answer answer);
+    Quiz addParticipantToQuiz(String code, Participant participant);
+    Quiz getQuizByCode(String code);
 }

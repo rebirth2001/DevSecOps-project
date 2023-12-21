@@ -1,5 +1,6 @@
 package com.example.app.startQuiz.DTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;

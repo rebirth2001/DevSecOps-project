@@ -1,5 +1,6 @@
 package com.example.app.startQuiz.service.impl;
 
+import com.example.app.participant.model.Participant;
 import com.example.app.startQuiz.model.Answer;
 import com.example.app.startQuiz.model.Question;
 import com.example.app.startQuiz.model.Quiz;
@@ -50,6 +51,15 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
+    public Quiz addParticipantToQuiz(String code, Participant participant) {
+        Quiz quiz = getQuizByCode(code);
+        quiz.getParticipant().add(participant);
+        participant.setQuiz(quiz);
+        quizRepository.save(quiz);
+        return quiz;
+    }
+
+    @Override
     public Quiz addAnswerToQuestion(Long quizId, Long quesionId, Answer answer) {
         Quiz quiz = getQuizById(quizId);
         Question question = quiz.getQuestions().stream()
@@ -60,6 +70,11 @@ public class QuizServiceImpl implements QuizService {
         answer.setQuestion(question);
         quizRepository.save(quiz);
         return quiz;
+    }
+
+    @Override
+    public Quiz getQuizByCode(String code) {
+        return quizRepository.findQuizzesByCodeOfInvitation(code);
     }
 
     @Override
