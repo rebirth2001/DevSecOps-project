@@ -1,0 +1,28 @@
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'front/app/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'front/app/**'
+jobs:
+  snyk:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '14'
+    - name: Install dependencies
+      run: npm install
+      working-directory: ./front/app
+    - name: Run Snyk to check for vulnerabilities
+      uses: snyk/actions/node@master
+      env:
+        SNYK_TOKEN: ${{ SNYK_SECRET }}
+      with:
+        command: test
+        arguments: --project-directory=./front/app
