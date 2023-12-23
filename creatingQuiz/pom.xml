@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.quizly</groupId>
-	<artifactId>creatingQuizService</artifactId>
+	<artifactId>creatingQuiz</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>creatingQuizService</name>
-	<description>creatingQuizService</description>
+	<name>creatingQuiz</name>
+	<description>creatingQuiz</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

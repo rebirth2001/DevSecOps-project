@@ -9,6 +9,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
     Optional<Answer> findAnswerById(Long id);
     List<Answer> findByQuestionId(Long id);
-
-
 }

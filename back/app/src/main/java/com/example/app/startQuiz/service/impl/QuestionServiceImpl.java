@@ -43,7 +43,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public void addQuestionsToQuiz(Long quizId, List<Question> questions) {
         Quiz quiz = quizRepository.findQuizById(quizId)
-                .orElseThrow(() -> new QuizNotFoundExeption("Quiz not found"));
+                .orElseThrow(() -> new QuizNotFoundException("Quiz not found"));
         for (Question question : questions){
             question.setQuiz(quiz);
         }

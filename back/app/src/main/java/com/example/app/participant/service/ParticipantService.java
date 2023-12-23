@@ -31,6 +31,4 @@ public class ParticipantService {
             return Collections.emptyList(); // Or another appropriate default value
         }
     }
-
-
 }

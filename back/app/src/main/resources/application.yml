@@ -1,0 +1,24 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/quizlydb
+    username: quizly
+    password: quizly
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate.transaction.jta.platform: org.hibernate.engine.transaction.jta.platform.internal.BitronixJtaPlatform
+    open-in-view: false
+
+jwt:
+  config:
+    secret: ad81fcba52342929672c0d8097c66e3f856db127798a02a890519b6fe79c19af
+    expiration: 60000
