@@ -3,8 +3,12 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'back/app/**'
   pull_request:
     types: [opened, synchronize, reopened]
+    paths:
+      - 'back/app/**'
 jobs:
   build:
     name: Build and analyze
@@ -28,9 +32,10 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/back/app/pom.xml') }}
+          key: ${{ runner.os }}-m2-${{ hashFiles('back/app/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=rebirth2001_QUIZLY
+        working-directory: ./back/app
