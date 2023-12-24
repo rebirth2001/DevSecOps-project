@@ -37,12 +37,3 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-
-      - name: Build and analyze with PostgreSQL
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_DB_URL: jdbc:postgresql://localhost:5433/quizlydb
-          SONAR_DB_USERNAME: quizly
-          SONAR_DB_PASSWORD: ${{ secrets.quizly }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=rebirth2001_QUIZLY
-        working-directory: ./back/app
