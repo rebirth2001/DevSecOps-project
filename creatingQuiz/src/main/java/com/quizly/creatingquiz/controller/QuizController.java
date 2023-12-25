@@ -13,6 +13,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,17 @@ public class QuizController {
     @Autowired
     private QuizService quizService;
 
+    @GetMapping("/quiz/{code}")
+    public ResponseEntity<?> getQuizBycode(
+            @Parameter(description = "Unique code of the quiz.")
+            @PathVariable String code){
+        Quiz quiz = quizService.getQuizByCode(code);
+        if (quiz == null){
+            return new ResponseEntity<>("no quizzes qith this code",HttpStatus.NOT_FOUND);
+        }
+        QuizDto quizDto = convertQuizToDto(quiz);
+        return ResponseEntity.ok(quizDto);
+    }
     @GetMapping
     @Operation(summary = "List all quizzes", description = "retrieve the list of all quizzes and dispalays them. It also get the quiz ID")
     public ResponseEntity<List<QuizDto>> getAllQuizzes(){
@@ -37,8 +50,13 @@ public class QuizController {
                     QuizDto quizDto = new QuizDto();
                     quizDto.setTitle(quiz.getTitle());
                     quizDto.setDescription(quiz.getDescription());
-                    quizDto.setQuestions(quiz.getQuestions().stream()
+                    quizDto.setQuestions(quiz.getQuestions()
+                            .stream()
                             .map(this::convertQuestionToDto)
+                            .collect(Collectors.toList()));
+                    quizDto.setParticipants(quiz.getParticipant()
+                            .stream()
+                            .map(this::convertParticipantToDto)
                             .collect(Collectors.toList()));
                     quizDto.setCodeOfInvitation(quiz.getCodeOfInvitation());
                     quizDto.setQuestionNumber(quiz.getQuestionNumber());
@@ -48,8 +66,13 @@ public class QuizController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok().body(quizzes);
     }
-
-    private QuestionDto convertQuestionToDto(Question question) {
+    private @NotNull ParticipantDto convertParticipantToDto(@NotNull Participant participant){
+        ParticipantDto participantDto = new ParticipantDto();
+        participantDto.setNameOfParticipant(participant.getNameOfParticipant());
+        participantDto.setResult(participantDto.getResult());
+        return participantDto;
+    }
+    private @NotNull QuestionDto convertQuestionToDto(@NotNull Question question) {
         QuestionDto questionDto = new QuestionDto();
         questionDto.setAnswers(question.getAnswers().stream().map(answer -> {
             return new AnswerDto(answer.getText(),answer.isCorrect());
@@ -57,7 +80,7 @@ public class QuizController {
         questionDto.setStatement(question.getStatement());
         return questionDto;
     }
-    private QuizDto convertQuizToDto(Quiz quiz){
+    private @NotNull QuizDto convertQuizToDto(@NotNull Quiz quiz){
         QuizDto quizDto = new QuizDto();
         quizDto.setTitle(quiz.getTitle());
         quizDto.setDescription(quiz.getDescription());
@@ -66,10 +89,11 @@ public class QuizController {
                 .map(question -> new QuestionDto(question.getStatement(), convertAnswersToDtos(question.getAnswers())))
                 .collect(Collectors.toList());
         quizDto.setQuestions(questionDtos);
+        quizDto.setCodeOfInvitation(quiz.getCodeOfInvitation());
         return quizDto;
     }
 
-    private List<AnswerDto> convertAnswersToDtos(List<Answer> answers) {
+    private List<AnswerDto> convertAnswersToDtos(@NotNull List<Answer> answers) {
         return answers.stream()
                 .map(answer -> new AnswerDto(answer.getText(), answer.isCorrect()))
                 .collect(Collectors.toList());
@@ -80,14 +104,14 @@ public class QuizController {
     @ApiResponse(responseCode = "200", description = "Participant added successfully")
     @ApiResponse(responseCode = "404", description = "Quiz not found")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<String> addParticipantToQuiz(
+    public ResponseEntity<?> addParticipantToQuiz(
             @Parameter(description = "unique code of the quiz the participant has passed.") @PathVariable String code,
-            @RequestBody ParticipantDto participantDTO
+            @Valid @RequestBody ParticipantDto participantDTO
     ){
         try {
             Quiz quiz = quizService.getQuizByCode(code);
             if (quiz == null){
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>("no quiz with this code.", HttpStatus.NOT_FOUND);
             }
             Participant participant = new Participant();
             participant.setNameOfParticipant(participantDTO.getNameOfParticipant());
@@ -104,7 +128,7 @@ public class QuizController {
     @Operation(summary = "Create a Quiz", description = "Create a new quiz with provided details. The request should include all the necessary fields so the creation of the quiz is after all the details are provided by the quiz creator.")
     @ApiResponse(responseCode = "201", description = "Quiz created successfully")
     @ApiResponse(responseCode = "500", description = "Internal server error")
-    public ResponseEntity<String> createQuiz(@RequestBody QuizDto quizDto){
+    public ResponseEntity<String> createQuiz(@Valid @RequestBody QuizDto quizDto){
         try{
             Quiz quiz = new Quiz();
             quiz.setTitle(quizDto.getTitle());
