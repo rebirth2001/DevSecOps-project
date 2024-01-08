@@ -9,20 +9,18 @@ pipeline {
             }
         }
     
-    stage('Build ') {
-        steps {
-            script {
-                def microservice = "eureka"
-                def jenkinsfile = "Jenkinsfile"  // assuming the Jenkinsfile is named "Jenkinsfile"
+ stage('Build and Test Microservices') {
+            steps {
+                script {
+                    // Spécifiez le dossier du microservice
+                    def microserviceFolder = 'eureka'  // Remplacez par le nom réel de votre dossier
 
-                echo "Building ${microservice}"
-                sh "pwd"
-                sh"ls ${microservice}"
-                sh "ls"
-                build job: "/${microservice}/${jenkinsfile}"
-                
-                
+                    // Exécutez le Jenkinsfile du microservice
+                    echo "Building and testing ${microserviceFolder}"
+                    build job: "${microserviceFolder}/Jenkinsfile", wait: true
+                }
             }
         }
+
     }
- }}
+}
