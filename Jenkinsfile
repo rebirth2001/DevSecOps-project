@@ -18,11 +18,18 @@ pipeline {
                     for (def microservice in microservices) {
                         echo "Building and testing ${microservice}"
                         
-                        // Exécutez le Jenkinsfile du microservice
-                        build job: "${microservice}/Jenkinsfile", wait: true
+                        // Utiliser la commande dir pour changer le répertoire avant d'exécuter le Jenkinsfile
+                        dir(microservice) {
+                            script {
+                                // Exécutez le Jenkinsfile du microservice
+                                build job: 'Jenkinsfile', wait: true
+                            }
+                        }
                     }
                 }
             }
         }
+
+        
     }
 }
