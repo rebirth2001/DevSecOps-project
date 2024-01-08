@@ -18,6 +18,7 @@ pipeline {
                 echo "Building ${microservice}"
                 sh "pwd"
                 sh"ls ${microservice}"
+                sh "ls"
                 build job: "./${microservice}/${jenkinsfile}"
                 
                 
