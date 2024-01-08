@@ -16,6 +16,7 @@ pipeline {
                 def jenkinsfile = "Jenkinsfile"  // assuming the Jenkinsfile is named "Jenkinsfile"
 
                 echo "Building ${microservice}"
+                sh "pwd"
                 build job: "./${microservice}/${jenkinsfile}"
                 
                 
