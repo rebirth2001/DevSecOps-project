@@ -19,11 +19,14 @@ pipeline {
                     echo "Building and testing ${microserviceFolder}"
                     dir(microserviceFolder) {
                         script {
-                            currentBuild.result = sh(script: 'mvn --version', returnStatus: true)
+                            echo "Current directory: ${pwd()}"
+                            echo "Maven version: "
+                            sh 'mvn --version'
+                            
+                            echo "Building the project: "
+                            sh 'mvn clean install'
                         }
                     }
                 }
-                }
+            }
         }
-   }
-}
