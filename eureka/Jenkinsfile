@@ -1,0 +1,18 @@
+node {
+    stage('Fetch changes'){
+        git 'https://github.com/eddineimad0/Quizly.git'
+    }
+
+     stage('Build image') {
+          if (isUnix()) {
+             sh 'mvn -f ./eureka/pom.xml clean install'
+             docker.build("quizly/eureka").push()
+          } else {
+             echo "Not ready for windows"
+          }
+     }
+
+     stage('Deploy ECS') {
+           echo "TODO deploy on AWS"
+     }
+}
