@@ -19,7 +19,7 @@ pipeline {
                 sh "pwd"
                 sh"ls ${microservice}"
                 sh "ls"
-                build job: "./${microservice}/${jenkinsfile}"
+                build job: "${microservice}/${jenkinsfile}"
                 
                 
             }
