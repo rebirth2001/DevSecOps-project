@@ -17,8 +17,7 @@ pipeline {
 
                 echo "Building ${microservice}"
 
-                // Invoke the microservice-specific Jenkinsfile
-                build job: "${microservice}/${jenkinsfile}"
+                
             }
         }
     }
