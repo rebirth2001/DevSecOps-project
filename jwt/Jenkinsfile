@@ -1,0 +1,22 @@
+pipeline {
+    agent any
+    stages {
+        stage('chekout') {
+            steps {
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'Pat_jenkins', url: 'https://github.com/rebirth2001/QUIZLY.git']])
+                
+            }
+        }
+    
+ stage('Build and Test') {
+            steps {
+                script {
+                    echo "Building and testing JWT microservice"
+                    
+                    // Insérez ici les commandes de build et de test spécifiques à JWT
+                    sh 'mvn clean install'
+                }
+            }
+        }
+    }
+}
