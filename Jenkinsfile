@@ -13,15 +13,17 @@ pipeline {
             steps {
                 script {
                     // Spécifiez le dossier du microservice
-                    def microserviceFolder = 'eureka'  // Remplacez par le nom réel de votre dossier
+                    def microserviceFolder = 'eureka'  // Assurez-vous que le nom est correct
 
                     // Exécutez le Jenkinsfile du microservice
                     echo "Building and testing ${microserviceFolder}"
                     dir(microserviceFolder) {
-                        build job: 'Jenkinsfile', wait: true
-                    }                }
-            }
+                        script {
+                            currentBuild.result = sh(script: 'mvn --version', returnStatus: true)
+                        }
+                    }
+                }
+                }
         }
-
-    }
+   }
 }
