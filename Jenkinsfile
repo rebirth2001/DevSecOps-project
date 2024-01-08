@@ -17,8 +17,9 @@ pipeline {
 
                     // Exécutez le Jenkinsfile du microservice
                     echo "Building and testing ${microserviceFolder}"
-                    build job: "eureka", wait: true
-                }
+                    dir(microserviceFolder) {
+                        build job: 'Jenkinsfile', wait: true
+                    }                }
             }
         }
 
