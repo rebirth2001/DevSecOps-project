@@ -1,8 +1,0 @@
-{
-  "scripts": {
-    "dev": "cd ./front/app/ && npm run dev",
-    "build": "cd ./front/app/ && npm run build",
-    "lint": "cd ./front/app/ && npm run lint",
-    "preview": "cd ./front/app/ && npm run preview"
-  }
-}
