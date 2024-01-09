@@ -9,7 +9,7 @@ pipeline {
         }
     stage('Build Quizs Microservice') {
             steps {
-                dir('quizs') {
+                dir('eureka') {
                     sh 'mvn clean install'
                 }
             }
