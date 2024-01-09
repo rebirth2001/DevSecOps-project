@@ -1,10 +1,12 @@
 package com.quizly.quizs.services;
 
 import com.quizly.quizs.models.Answer;
+import com.quizly.quizs.models.Question;
 import com.quizly.quizs.repositories.AnswerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,5 +42,9 @@ public class AnswerService {
     // Get answers for a specific question
     public List<Answer> getAnswersForQuestion(Long questionId) {
         return answerRepository.findByQuestionId(questionId);
+    }
+
+    public List<Answer> getAnswersByQuestion(Long id) {
+        return answerRepository.findByQuestionId(id);
     }
 }

@@ -16,7 +16,7 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String text;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "question")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "question", fetch = FetchType.EAGER)
     private List<Answer> answers;
     @ManyToOne
     @JoinColumn(name = "quiz_id")
