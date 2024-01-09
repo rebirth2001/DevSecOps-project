@@ -22,6 +22,9 @@ const request = (
   };
 
   return fetch(url, cfg).then((response) => {
+    if (response.status === 204) {
+      return Promise.reject();
+    }
     if (isEmptyResponse) {
       return response;
     } else {
@@ -131,22 +134,20 @@ export function findUserProfile(username: string): Promise<UserProfile[]> {
     return Promise.reject("No access token set.");
   }
 
-  return request(
-    {
-      url: API_BASE_URL + "/users/find/" + username,
-      method: "GET",
-    },
-  );
-}
-
-export function getUserQuizProfile(username: string): Promise<UserQuizProfile> {
-  return new Promise<UserQuizProfile>((resolve, reject) => {
-    resolve({
-      quizTaken: 1,
-      quizCreated: 4,
-    });
+  return request({
+    url: API_BASE_URL + "/users/find/" + username,
+    method: "GET",
   });
 }
+
+// export function getUserQuizProfile(username: string): Promise<UserQuizProfile> {
+//   return new Promise<UserQuizProfile>((resolve, reject) => {
+//     resolve({
+//       quizTaken: 1,
+//       quizCreated: 4,
+//     });
+//   });
+// }
 
 export function getAllQuizs(page: number, size: number) {
   page = page || 0;
@@ -189,9 +190,9 @@ export function getUserCreatedQuizs(
   return request({
     url:
       API_BASE_URL +
-      "/users/" +
+      "/quizs/quizzes/" +
       username +
-      "/polls?page=" +
+      "?page=" +
       page +
       "&size=" +
       size,
@@ -210,7 +211,7 @@ export function getUserTakenQuizs(
   return request({
     url:
       API_BASE_URL +
-      "/users/" +
+      "/quizzes/" +
       username +
       "/votes?page=" +
       page +

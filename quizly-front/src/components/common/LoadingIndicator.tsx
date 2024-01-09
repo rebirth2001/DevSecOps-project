@@ -3,7 +3,11 @@ import { Spin } from "antd";
 
 export default function LoadingIndicator() {
   const antIcon = (
-    <Loading3QuartersOutlined style={{ fontSize: 30 }} spin={true} />
+    <Loading3QuartersOutlined
+      style={{ fontSize: 30 }}
+      spin={true}
+      onClick={undefined}
+    />
   );
   return (
     <Spin

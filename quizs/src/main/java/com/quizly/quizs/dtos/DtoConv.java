@@ -13,8 +13,8 @@ public class DtoConv {
         quiz.setTitle(dto.getTitle());
         quiz.setOwner(dto.getOwner());
         quiz.setAttempts(dto.getAttempts());
-        quiz.setCreatedAt(dto.getCreatedAt());
-        quiz.setExpiresAt(dto.getExpiresAt());
+//        quiz.setCreatedAt(dto.getCreatedAt());
+//        quiz.setExpiresAt(dto.getExpiresAt());
 
         List<Question> questions;
         if (dto.getQuestions() != null) {
@@ -27,14 +27,14 @@ public class DtoConv {
         quiz.setQuestions(questions);
 
         List<Result> results;
-        if (dto.getResults() != null) {
-            results = dto.getResults().stream()
-                    .map(DtoConv::resultDtoToResult)
-                    .collect(Collectors.toList());
-        } else {
-            results = new ArrayList<>(); // Similarly handle results
-        }
-        quiz.setResults(results);
+//        if (dto.getResults() != null) {
+//            results = dto.getResults().stream()
+//                    .map(DtoConv::resultDtoToResult)
+//                    .collect(Collectors.toList());
+//        } else {
+//            results = new ArrayList<>(); // Similarly handle results
+//        }
+//        quiz.setResults(results);
 
         return quiz;
     }
@@ -44,8 +44,8 @@ public class DtoConv {
         dto.setTitle(quiz.getTitle());
         dto.setOwner(quiz.getOwner());
         dto.setAttempts(quiz.getAttempts());
-        dto.setCreatedAt(quiz.getCreatedAt());
-        dto.setExpiresAt(quiz.getExpiresAt());
+        dto.setCreatedAt(quiz.getCreatedAt().toString());
+        dto.setExpiresAt(quiz.getExpiresAt().toString());
         List<QuestionDto> questionDtos = quiz.getQuestions().stream()
                 .map(DtoConv::questionToQuestionDto)
                     .collect(Collectors.toList());
@@ -53,7 +53,7 @@ public class DtoConv {
         List<ResultDto> resultDtos = quiz.getResults().stream()
                 .map(DtoConv::resultToResultDto)
                     .collect(Collectors.toList());
-        dto.setResults(resultDtos);
+//        dto.setResults(resultDtos);
         return dto;
     }
     public static Answer answerDtoToAnswer(AnswerDto answerDto){
@@ -61,9 +61,9 @@ public class DtoConv {
         answer.setId(answerDto.getId());
         answer.setText(answerDto.getText());
         answer.setCorrect(answerDto.isCorrect());
-        if (answerDto.getQuestion() != null) {
-            answer.setQuestion(questionDtoToQuestion(answerDto.getQuestion()));
-        }
+//        if (answerDto.getQuestion() != null) {
+//            answer.setQuestion(questionDtoToQuestion(answerDto.getQuestion()));
+//        }
         return answer;
     }
     public static AnswerDto answerToAnswerDto(Answer answer){
@@ -71,9 +71,9 @@ public class DtoConv {
         dto.setId(answer.getId());
         dto.setText(answer.getText());
         dto.setCorrect(answer.isCorrect());
-        if (answer.getQuestion() != null) {
-            dto.setQuestionId(answer.getQuestion().getId());
-        }
+//        if (answer.getQuestion() != null) {
+//            dto.setQuestionId(answer.getQuestion().getId());
+//        }
         return dto;
     }
     public static ResultDto resultToResultDto(Result result, boolean convertParticipant) {
@@ -150,9 +150,9 @@ public class DtoConv {
                 .map(DtoConv::answerToAnswerDto)
                 .collect(Collectors.toList());
         questionDto.setAnswers(answerDtos);
-        if (question.getQuiz() != null) {
-            questionDto.setQuizID(question.getQuiz().getId());
-        }
+//        if (question.getQuiz() != null) {
+//            questionDto.setQuizID(question.getQuiz().getId());
+//        }
         return questionDto;
     }
     public static Question questionDtoToQuestion(QuestionDto questionDto) {
@@ -163,9 +163,9 @@ public class DtoConv {
                 .map(DtoConv::answerDtoToAnswer)
                 .collect(Collectors.toList());
         question.setAnswers(answers);
-        if (questionDto.getQuiz() != null) {
-            question.setQuiz(quizDtoToEntity(questionDto.getQuiz()));
-        }
+//        if (questionDto.getQuiz() != null) {
+//            question.setQuiz(quizDtoToEntity(questionDto.getQuiz()));
+//        }
         return question;
     }
 }

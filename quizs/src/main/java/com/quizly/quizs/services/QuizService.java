@@ -2,7 +2,6 @@ package com.quizly.quizs.services;
 
 import com.quizly.quizs.dtos.DtoConv;
 import com.quizly.quizs.dtos.QuizDto;
-import com.quizly.quizs.dtos.ResultDto;
 import com.quizly.quizs.models.Question;
 import com.quizly.quizs.models.Quiz;
 import com.quizly.quizs.models.Result;
@@ -17,7 +16,6 @@ import java.util.stream.Collectors;
 @Service
 public class QuizService {
     private final QuizRepository quizRepo;
-
     @Autowired
     public QuizService(QuizRepository quizRepo) {
         this.quizRepo = quizRepo;
@@ -34,12 +32,12 @@ public class QuizService {
                 .orElseThrow(() -> new RuntimeException("quiz not found"));
         quiz.setTitle(quizDto.getTitle());
         quiz.setOwner(quizDto.getOwner());
-        List<Result> results = quizDto.getResults().stream()
-                .map(DtoConv::resultDtoToResult)
-                .collect(Collectors.toList());
-        quiz.setResults(results);
-        quiz.setExpiresAt(quizDto.getExpiresAt());
-        quiz.setCreatedAt(quizDto.getCreatedAt());
+//        List<Result> results = quizDto.getResults().stream()
+//                .map(DtoConv::resultDtoToResult)
+//                .collect(Collectors.toList());
+//        quiz.setResults(results);
+//        quiz.setExpiresAt(quizDto.getExpiresAt());
+//        quiz.setCreatedAt(quizDto.getCreatedAt());
         quiz.setId(quizDto.getId());
         quiz.setAttempts(quizDto.getAttempts());
         List<Question> questions = quizDto.getQuestions().stream()
@@ -49,7 +47,7 @@ public class QuizService {
         return quizRepo.save(quiz);
     }
 
-    public int countQuizzesByOwner(String user) {
+    public Long countQuizzesByOwner(String user) {
         return quizRepo.countQuizzesByOwner(user);
     }
 }

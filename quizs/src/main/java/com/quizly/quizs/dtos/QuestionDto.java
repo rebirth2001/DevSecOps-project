@@ -12,6 +12,6 @@ public class QuestionDto {
     private Long id;
     private String text;
     private List<AnswerDto> answers;
-    private QuizDto quiz;
-    private Long quizID;
+    //private QuizDto quiz;
+    //private Long quizID;
 }

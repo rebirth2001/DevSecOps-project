@@ -52,7 +52,7 @@ function QuizView(props: QuizProps) {
   };
 
   const getTimeRemaining = (quiz: QuizResponse): string => {
-    const expirationTime = new Date(quiz.expirationDateTime).getTime();
+    const expirationTime = new Date(quiz.expriesAt).getTime();
     const currentTime = new Date().getTime();
 
     var difference_ms = expirationTime - currentTime;
@@ -79,7 +79,7 @@ function QuizView(props: QuizProps) {
 
   const quizChoices: JSX.Element[] = [];
   if (score === null && progress < props.quiz.questions.length) {
-    props.quiz.questions[progress].choices.forEach((choice) => {
+    props.quiz.questions[progress].answers.forEach((choice) => {
       quizChoices.push(
         <Radio className="quiz-choice-radio" key={choice.id} value={choice.id}>
           {choice.text}
@@ -92,20 +92,18 @@ function QuizView(props: QuizProps) {
     <div className="quiz-content">
       <div className="quiz-header">
         <div className="quiz-creator-info">
-          <Link className="creator-link" to={`/users/${props.quiz.createdBy}`}>
+          <Link className="creator-link" to={`/users/${props.quiz.owner}`}>
             <Avatar
               className="quiz-creator-avatar"
               style={{
-                backgroundColor: getAvatarColor(props.quiz.createdBy),
+                backgroundColor: getAvatarColor(props.quiz.owner),
               }}
             >
-              {props.quiz.createdBy.slice(0, 1).toUpperCase()}
+              {props.quiz.owner.slice(0, 1).toUpperCase()}
             </Avatar>
-            <span className="quiz-creator-username">
-              @{props.quiz.createdBy}
-            </span>
+            <span className="quiz-creator-username">@{props.quiz.owner}</span>
             <span className="quiz-creation-date">
-              {formatDateTime(props.quiz.creationDateTime)}
+              {formatDateTime(props.quiz.createdAt)}
             </span>
           </Link>
         </div>
@@ -136,14 +134,14 @@ function QuizView(props: QuizProps) {
           <Button
             className="submit-button"
             disabled={!answer}
-            onClick={(_) => {
+            onClickCapture={(_) => {
               handleAnswerSubmit();
             }}
           >
             Submit
           </Button>
         ) : null}
-        <span className="total-votes">{props.quiz.totalAttempts} attempts</span>
+        <span className="total-votes">{props.quiz.attempts || 0} attempts</span>
         <span className="separator">•</span>
         <span className="time-left">
           {props.quiz.isExpired ? "Quiz Expired" : getTimeRemaining(props.quiz)}
