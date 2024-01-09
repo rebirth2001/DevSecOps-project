@@ -12,6 +12,11 @@ pipeline {
                 dir('eureka') {
                     sh 'mvn clean install'
                     sh 'docker build -t joui5/app .'
+                    withCredentials([string(credentialsId: 'docker-hub-password', variable: 'dockerhubpwd')]) {
+                        sh 'docker login -u="joui5" -p="$dockerhubpwd"'
+
+                        sh 'docker push joui5/app' 
+}
                 }
             }
         }
