@@ -5,19 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "answers")
-public class Answer {
+@Table(name = "results")
+public class Result {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String text;
-    @Column(name = "is_correct")
-    private boolean correct;
+    private int score;
+    @ManyToOne
+    @JoinColumn(name = "participant_id")
+    private Participant participant;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "question_id")
-    private Question question;
+    @JoinColumn(name = "quiz_id")
+    private Quiz quiz;
 }

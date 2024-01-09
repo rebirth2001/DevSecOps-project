@@ -1,0 +1,100 @@
+name: Parallel Microservices Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build-eureka:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: ./.github/workflows/actions
+      - name: Build and push Eureka Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: ./eureka
+          push: true
+          tags: ghcr.io/rebirth2001/eureka:latest
+
+  build-jwt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: ./.github/workflows/actions
+      - name: Build and push JWT Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: ./jwt
+          push: true
+          tags: ghcr.io/rebirth2001/jwt:latest
+
+  build-users:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: ./.github/workflows/actions
+      - name: Run Maven Build Command
+        run: mvn clean install -DskipTests -f users
+      - name: Run Maven Test
+        run: mvn test -f users
+      - name: Unit Test Results
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Users-Service-Unit-Test-Results
+          path: "users/**/surefire-reports/*.xml"
+          reporter: java-junit
+      - name: Analyze with SonarCloud
+        run: mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -f users
+
+  build-quizs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: ./.github/workflows/actions
+      - name: Run Maven Build Command
+        run: mvn clean install -DskipTests -f quizs
+      - name: Run Maven Test
+        run: mvn test -f quizs
+      - name: Unit Test Results
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Quizs-Service-Unit-Test-Results
+          path: "quizs/**/surefire-reports/*.xml"
+          reporter: java-junit
+      - name: Analyze with SonarCloud
+        run: mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -f quizs
+
+  build-api-gateway:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: ./.github/workflows/actions
+      - name: Run Maven Build Command
+        run: mvn clean install -DskipTests -f api-gateway
+      - name: Run Maven Test
+        run: mvn test -f api-gateway
+      - name: Unit Test Results
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: API-Gateway-Unit-Test-Results
+          path: "api-gateway/**/surefire-reports/*.xml"
+          reporter: java-junit
+      - name: Analyze with SonarCloud
+        run: mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -f api-gateway
