@@ -87,10 +87,10 @@ public class UserController {
     }
 
     @GetMapping("/followed")
-    public ResponseEntity<List<User>> getAllFollowed(@RequestHeader(SecurityConstants.AUTHORIZED_USER_HEADER) String authorizedUser){
+    public ResponseEntity<List<String>> getAllFollowed(@RequestHeader(SecurityConstants.AUTHORIZED_USER_HEADER) String authorizedUser){
         try{
             var follower = userService.findByUsername(authorizedUser).orElseThrow();
-            var result = followService.findByFollower(follower).stream().map(Follow::getFollowed).collect(Collectors.toList());
+            var result = followService.findByFollower(follower).stream().map(follow -> follow.getFollowed().getUsername()).collect(Collectors.toList());
             return ResponseEntity.ok(result);
         }catch (Exception e){
             System.out.println(e.getMessage());

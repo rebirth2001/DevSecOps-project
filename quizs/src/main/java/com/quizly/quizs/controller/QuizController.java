@@ -5,21 +5,25 @@ import com.quizly.quizs.dtos.*;
 import com.quizly.quizs.models.*;
 import com.quizly.quizs.services.*;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
 import java.time.Instant;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 
 @RestController
 @RequestMapping("/")
+@RequiredArgsConstructor
 public class QuizController {
     @Autowired
     private QuizService quizService;
@@ -31,7 +35,9 @@ public class QuizController {
     private QuestionService questionService;
     @Autowired
     private AnswerService answerService;
+    private Map<String, List<OwnerQuizDto>> quizCache = new ConcurrentHashMap<>();
 
+    private final RestTemplate restTemplate;
     @PostMapping("/{quizId}")
     public ResponseEntity<?> addParticipant(
             @PathVariable Long quizId,
@@ -96,6 +102,117 @@ public class QuizController {
         }
     }
 
+    @GetMapping("/followers/{username}")
+    public ResponseEntity<?> getFollowers(@PathVariable String username) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.set(SecurityConstants.AUTHORIZED_USER_HEADER, username);
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            String url = "lb://users-service/followed";
+            ResponseEntity<List<String>> response = restTemplate.exchange(
+                    url, HttpMethod.GET, entity, new ParameterizedTypeReference<List<String>>() {});
+
+            List<String> followers = response.getBody();
+            if (followers == null || followers.isEmpty()) {
+                return new ResponseEntity<>("No followers found", HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(followers, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println("Error retrieving followers: " + e.getMessage());
+            return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/followers-quizzes/{username}")
+    public ResponseEntity<?> getQuizzesOfFollowers(
+            @PathVariable String username,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        System.out.println("Getting quizzes of followers for: " + username);
+        try {
+            List<OwnerQuizDto> allQuizzes = quizCache.get(username);
+            if (allQuizzes == null) {
+                allQuizzes = fetchQuizzes(username);
+                quizCache.put(username, allQuizzes);
+            }
+
+            if (allQuizzes.isEmpty()) {
+                System.out.println("No quizzes found for followers of: " + username);
+                return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
+            }
+
+            int totalQuizzes = allQuizzes.size();
+            int startIndex = page * size;
+            int endIndex = Math.min(startIndex + size, totalQuizzes);
+
+            if (startIndex >= totalQuizzes) {
+                System.out.println("Start index out of range for: " + username);
+                return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
+            }
+
+            List<OwnerQuizDto> paginatedQuizzes = allQuizzes.subList(startIndex, endIndex);
+            return new ResponseEntity<>(paginatedQuizzes, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println("Error retrieving shuffled paginated quizzes of followers: " + e.getMessage());
+            e.printStackTrace();
+            return new ResponseEntity<>("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private List<OwnerQuizDto> fetchQuizzes(String username) {
+        System.out.println("Fetching quizzes for: " + username);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(SecurityConstants.AUTHORIZED_USER_HEADER, username);
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+
+        List<OwnerQuizDto> allQuizzes = new ArrayList<>();
+        try {
+            String url = "lb://users-service/followed";
+            System.out.println("Making restTemplate exchange to: " + url);
+            ResponseEntity<List<String>> response = restTemplate.exchange(
+                    url, HttpMethod.GET, entity, new ParameterizedTypeReference<List<String>>() {});
+
+            System.out.println("Response status code: " + response.getStatusCode());
+            if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+                List<String> followerUsernames = response.getBody();
+                System.out.println("Follower usernames: " + followerUsernames);
+                for (String followerUsername : followerUsernames) {
+                    System.out.println("Getting quizzes for follower: " + followerUsername);
+                    List<Quiz> quizzes = quizService.getQuizByOwner(followerUsername);
+                    if (quizzes != null && !quizzes.isEmpty()) {
+                        for (Quiz quiz : quizzes) {
+                            QuizDto quizDto = DtoConv.quizToQuizDto(quiz);
+                            allQuizzes.add(new OwnerQuizDto(followerUsername, quizDto));
+                            System.out.println("Added quiz: " + quiz.getTitle() + " for follower: " + followerUsername);
+                        }
+                    } else {
+                        System.out.println("No quizzes found or null returned for follower: " + followerUsername);
+                    }
+                }
+            } else {
+                System.err.println("Error or null response from 'lb://users-service/followed'");
+            }
+        } catch (Exception e) {
+            System.err.println("Exception in fetchQuizzes: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        Collections.shuffle(allQuizzes);
+
+        // Update the cache with the new list
+        quizCache.put(username, allQuizzes);
+
+        return allQuizzes;
+    }
+
+
+
+
+
+
+
+
+
     @PostMapping("/create")
     public ResponseEntity<CreateQuizResponse> createQuiz(@RequestHeader(name = SecurityConstants.AUTHORIZED_USER_HEADER) String authorizedUser, @Valid @RequestBody CreateQuizRequest quizDto){
         try{
@@ -124,7 +241,7 @@ public class QuizController {
                     .collect(Collectors.toList());
             quiz.setQuestions(questions);
             quizService.saveQuiz(quiz);
-            return new ResponseEntity(new CreateQuizResponse(),HttpStatus.CREATED);
+            return new ResponseEntity<>(new CreateQuizResponse(),HttpStatus.CREATED);
         } catch (Exception e){
             System.out.println("error creating quiz" + e.getMessage());
             return new ResponseEntity<CreateQuizResponse>(new CreateQuizResponse(),HttpStatus.INTERNAL_SERVER_ERROR);
