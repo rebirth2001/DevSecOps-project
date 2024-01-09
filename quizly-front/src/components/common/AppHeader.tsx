@@ -6,6 +6,7 @@ import {
   CaretDownOutlined,
   HomeOutlined,
   PlusSquareOutlined,
+  SearchOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import { UserProfile } from "../../lib/user";
@@ -28,7 +29,7 @@ export default function AppHeader(props: AppHeaderProps) {
       {
         label: (
           <Link to={"/"}>
-            <HomeOutlined />
+            <HomeOutlined onClick={undefined} />
           </Link>
         ),
         key: "/",
@@ -36,8 +37,17 @@ export default function AppHeader(props: AppHeaderProps) {
       },
       {
         label: (
+          <Link to={"/find-user"}>
+            <SearchOutlined onClick={undefined} />
+          </Link>
+        ),
+        key: "/find-user",
+        className: "nav-icon",
+      },
+      {
+        label: (
           <Link to={"/quiz/new"}>
-            <PlusSquareOutlined />
+            <PlusSquareOutlined onClick={undefined} />
           </Link>
         ),
         key: "/quiz/new",
@@ -89,51 +99,55 @@ interface ProfileDropdownMenuProps {
   currentUser: UserProfile;
   handleMenuClick: (key: string) => void;
 }
+
 function ProfileDropdownMenu(props: ProfileDropdownMenuProps) {
-  const dropdownMenu = (
-    <Menu
-      onClick={(info: any) => {
-        props.handleMenuClick(info.key);
-      }}
-      className="profile-dropdown-menu"
-    >
-      <Menu.Item key="user-info" className="dropdown-item" disabled>
-        <div className="user-full-name-info">{props.currentUser.username}</div>
-        <div className="username-info">@{props.currentUser.username}</div>
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="profile" className="dropdown-item">
-        <Link to={`/users/${props.currentUser.username}`}>Profile</Link>
-      </Menu.Item>
-      <Menu.Item key="logout" className="dropdown-item">
-        Logout
-      </Menu.Item>
-    </Menu>
-  );
-  // const dropdownMenu: MenuProps["items"] = [
-  //   {
-  //     label: <Link to={`/users/${props.currentUser.username}`}>Profile</Link>,
-  //     key: "profile",
-  //     className: "dropdown-item",
-  //   },
-  //   {
-  //     label: <span>Logout</span>,
-  //     key: "logout",
-  //     className: "dropdown-item",
-  //   },
-  // ];
+  const onClick: MenuProps["onClick"] = ({ key }) => {
+    props.handleMenuClick(key);
+  };
+  const items: MenuProps["items"] = [
+    {
+      key: "user-info",
+      className: "dropdown-item",
+      disabled: true,
+      label: (
+        <>
+          <div className="user-full-name-info">
+            {props.currentUser.username}
+          </div>
+          <div className="username-info">{props.currentUser.email}</div>
+        </>
+      ),
+    },
+    {
+      key: "profile",
+      className: "dropdown-item",
+      label: <Link to={"/me"}>Profile</Link>,
+    },
+    {
+      key: "logout",
+      className: "dropdown-item",
+      label: <span>Logout</span>,
+    },
+  ];
 
   return (
     <Dropdown
-      overlay={dropdownMenu}
+      menu={{ items, onClick }}
+      dropdownRender={(menu) => (
+        <div className="profile-dropdown-menu">{menu}</div>
+      )}
       trigger={["click"]}
       getPopupContainer={(_: HTMLElement): HTMLElement => {
         return document.querySelector(".profile-menu")!;
       }}
     >
       <a className="ant-dropdown-link">
-        <UserOutlined className="nav-icon" style={{ marginRight: 0 }} />{" "}
-        <CaretDownOutlined />
+        <UserOutlined
+          className="nav-icon"
+          style={{ marginRight: 0 }}
+          onClick={undefined}
+        />{" "}
+        <CaretDownOutlined onClick={undefined} />
       </a>
     </Dropdown>
   );

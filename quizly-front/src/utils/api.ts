@@ -1,7 +1,10 @@
 import { API_BASE_URL, QUIZ_LIST_SIZE, ACCESS_TOKEN } from "../constants";
 import { UserProfile } from "../lib/user";
 
-const request = (options: RequestOptions): Promise<any> => {
+const request = (
+  options: RequestOptions,
+  isEmptyResponse: boolean = false
+): Promise<any> => {
   const headers: HeadersInit = [["Content-Type", "application/json"]];
 
   if (localStorage.getItem(ACCESS_TOKEN)) {
@@ -18,14 +21,18 @@ const request = (options: RequestOptions): Promise<any> => {
     body: options.body,
   };
 
-  return fetch(url, cfg).then((response) =>
-    response.json().then((json) => {
-      if (!response.ok) {
-        return Promise.reject(json);
-      }
-      return json;
-    })
-  );
+  return fetch(url, cfg).then((response) => {
+    if (isEmptyResponse) {
+      return response;
+    } else {
+      return response.json().then((json) => {
+        if (!response.ok) {
+          return Promise.reject(json);
+        }
+        return json;
+      });
+    }
+  });
 };
 
 export function login(loginRequest: LoginRequest): Promise<LoginResponse> {
@@ -73,10 +80,71 @@ export function getCurrentUser(): Promise<UserProfile> {
   });
 }
 
+export function checkIfUserFollows(username: string): Promise<boolean> {
+  if (!localStorage.getItem(ACCESS_TOKEN)) {
+    return Promise.reject("No access token set.");
+  }
+
+  return request({
+    url: API_BASE_URL + "/users/does-follow/" + username,
+    method: "GET",
+  });
+}
+
+export function followUser(username: string): Promise<void> {
+  if (!localStorage.getItem(ACCESS_TOKEN)) {
+    return Promise.reject("No access token set.");
+  }
+
+  return request(
+    {
+      url: API_BASE_URL + "/users/follow/" + username,
+      method: "GET",
+    },
+    true
+  );
+}
+
+export function unfollowUser(username: string): Promise<void> {
+  if (!localStorage.getItem(ACCESS_TOKEN)) {
+    return Promise.reject("No access token set.");
+  }
+
+  return request(
+    {
+      url: API_BASE_URL + "/users/unfollow/" + username,
+      method: "GET",
+    },
+    true
+  );
+}
+
 export function getUserProfile(username: string): Promise<UserProfile> {
   return request({
-    url: API_BASE_URL + "/users/" + username,
+    url: API_BASE_URL + "/users/profile/" + username,
     method: "GET",
+  });
+}
+
+export function findUserProfile(username: string): Promise<UserProfile[]> {
+  if (!localStorage.getItem(ACCESS_TOKEN)) {
+    return Promise.reject("No access token set.");
+  }
+
+  return request(
+    {
+      url: API_BASE_URL + "/users/find/" + username,
+      method: "GET",
+    },
+  );
+}
+
+export function getUserQuizProfile(username: string): Promise<UserQuizProfile> {
+  return new Promise<UserQuizProfile>((resolve, reject) => {
+    resolve({
+      quizTaken: 1,
+      quizCreated: 4,
+    });
   });
 }
 
@@ -90,10 +158,6 @@ export function getAllQuizs(page: number, size: number) {
   });
 }
 
-/*
- * TO DO.
- */
-
 export function createQuiz(quizData: Quiz): Promise<Response> {
   return request({
     url: API_BASE_URL + "/quizs/create",
@@ -101,6 +165,10 @@ export function createQuiz(quizData: Quiz): Promise<Response> {
     body: JSON.stringify(quizData),
   });
 }
+
+/*
+ *  TO DO.
+ */
 
 // export function castVote(voteData) {
 //   return request({

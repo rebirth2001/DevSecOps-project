@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.List;
 
 @Builder
 @Setter
@@ -27,4 +28,10 @@ public class User {
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
+
+    @OneToMany(mappedBy = "followed" )
+    private List<Follow> followers;
+
+    @OneToMany(mappedBy = "follower" )
+    private List<Follow> following;
 }

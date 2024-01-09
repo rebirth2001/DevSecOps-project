@@ -7,6 +7,7 @@ import com.quizly.users.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -38,4 +39,6 @@ public class UserService {
     }
 
     public Optional<User> findByUsername(String username){return userRepository.findByUsername(username);}
+
+    public List<User> queryUser(String username){return userRepository.queryUsername(username);}
 }

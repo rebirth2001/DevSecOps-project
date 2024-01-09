@@ -35,9 +35,12 @@ export class User {
 }
 
 export type UserProfile = {
-  quizesCount: number;
-  quizesTaken: number;
+  quizsCreated: number;
+  quizsTaken: number;
   username: string;
   email: string;
   joinedAt: string;
+  followersCount: number;
 };
+
+

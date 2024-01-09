@@ -7,15 +7,12 @@ import com.quizly.quizs.models.Question;
 import com.quizly.quizs.models.Quiz;
 import com.quizly.quizs.services.QuizService;
 import jakarta.validation.Valid;
-import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.datatype.Duration;
-iport java.time.Instant;
-import java.time.temporal.TemporalAmount;
+import java.time.Instant;
 
 @RestController
 @RequestMapping("/")

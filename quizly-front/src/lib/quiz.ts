@@ -29,3 +29,8 @@ type QuizAnswers = {
   quizID: number;
   answers: Answer[];
 };
+
+type UserQuizProfile = {
+  quizCreated: number;
+  quizTaken: number;
+};

@@ -99,7 +99,7 @@ function QuizView(props: QuizProps) {
                 backgroundColor: getAvatarColor(props.quiz.createdBy),
               }}
             >
-              {props.quiz.createdBy.toUpperCase()}
+              {props.quiz.createdBy.slice(0, 1).toUpperCase()}
             </Avatar>
             <span className="quiz-creator-username">
               @{props.quiz.createdBy}
