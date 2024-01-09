@@ -161,6 +161,14 @@ jobs:
     needs: build-quizs
     runs-on: ubuntu-latest
     services:
+      eureka:
+        image: ghcr.io/rebirth2001/eureka:latest
+        ports:
+          - 8761:8761
+      jwt:
+        image: ghcr.io/rebirth2001/jwt:latest
+        ports:
+          - 8020:8020
       postgres:
         image: postgres
         env:
