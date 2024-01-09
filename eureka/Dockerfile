@@ -16,4 +16,4 @@ USER app
 COPY target/*.jar app.jar
 
 # Run the jar file as an entry command.
-ENTRYPOINT ["java","-jar","/eureka.jar"]
+ENTRYPOINT ["java","-jar","/app.jar"]
