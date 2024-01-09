@@ -8,7 +8,6 @@ pipeline {
             }
         }
     
- stages {
         stage('Build Users Microservice') {
             steps {
                 dir('users') {
@@ -34,6 +33,6 @@ pipeline {
         }
     }
 }
-}
+
         
     
