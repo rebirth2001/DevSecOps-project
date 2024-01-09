@@ -160,6 +160,15 @@ jobs:
     name: Build and analyze API Gateway
     needs: build-quizs
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_DB: quizlydb
+          POSTGRES_USER: quizly
+          POSTGRES_PASSWORD: quizly
+        ports:
+          - 5432:5432
     steps:
       - uses: actions/checkout@v3
         with:
