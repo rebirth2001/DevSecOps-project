@@ -1,4 +1,4 @@
 jwt:
   secretKey: "ad81fcba52342929672c0d8097c66e3f856db127798a02a890519b6fe79c19af"
-  expiration: 3600000 # 15 mins
+  expiration: 86400000 # 15 mins
   refreshDuration: 86400000 # 24 hours refresh time span

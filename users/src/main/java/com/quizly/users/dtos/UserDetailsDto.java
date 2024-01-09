@@ -14,4 +14,6 @@ public class UserDetailsDto {
     private String email;
     @JsonProperty("joinedAt")
     private Instant joinedAt;
+    @JsonProperty("followersCount")
+    private Long followersCount;
 }

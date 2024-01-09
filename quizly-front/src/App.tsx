@@ -15,6 +15,7 @@ import LoadingIndicator from "./components/common/LoadingIndicator";
 import NotFound from "./components/common/NotFound";
 import Profile from "./components/profile/profile";
 import QuizList from "./components/quiz/QuizList";
+import Search from "./components/search/Search";
 
 function App() {
   const navigate = useNavigate();
@@ -109,10 +110,46 @@ function App() {
               }
             />
             <Route
+              path="/users/:username"
+              element={
+                isAuthenticated ? (
+                  <Profile
+                    currentUser={currentUser!}
+                    isAuthenticated={isAuthenticated}
+                  />
+                ) : (
+                  <Navigate replace={true} to="/log-in" />
+                )
+              }
+            />
+            <Route
+              path="/me"
+              element={
+                isAuthenticated ? (
+                  <Profile
+                    currentUser={currentUser!}
+                    isAuthenticated={isAuthenticated}
+                  />
+                ) : (
+                  <Navigate replace={true} to="/log-in" />
+                )
+              }
+            />
+            <Route
               path="/quiz/new"
               element={
                 isAuthenticated ? (
                   <NewQuiz />
+                ) : (
+                  <Navigate replace={true} to="/log-in" />
+                )
+              }
+            />
+            <Route
+              path="/find-user"
+              element={
+                isAuthenticated ? (
+                  <Search />
                 ) : (
                   <Navigate replace={true} to="/log-in" />
                 )

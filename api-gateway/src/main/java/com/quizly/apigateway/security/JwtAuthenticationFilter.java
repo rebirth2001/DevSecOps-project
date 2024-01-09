@@ -75,10 +75,16 @@ public class JwtAuthenticationFilter implements GatewayFilter {
      // Reads the JWT from the Authorization header, and then uses JWT to validate the token
     private Mono<String> validateJwtToken(String header) {
         String token = header.replace(SecurityConstants.BEARER_PREFIX,"");
-        return webClient.get()
-                .uri("http://jwt-service/verify?token="+token)
-                .retrieve()
-                .bodyToMono(String.class);
+        try {
+            return webClient.get()
+                    .uri("http://jwt-service/verify?token="+token)
+                    .retrieve()
+                    .bodyToMono(String.class);
+
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return Mono.empty();
+        }
     }
 
     private String getAuthHeader(ServerHttpRequest request) {
