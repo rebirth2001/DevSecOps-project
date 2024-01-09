@@ -14,25 +14,11 @@ pipeline {
                 }
             }
         }
-        stage('Build Users Microservice') {
-            steps {
-                dir('users') {
-                    sh 'mvn clean install'
-                }
-            }
-        }
+    
         
-        
-        
-        stage('Build JWT Microservice') {
-            steps {
-                dir('jwt') {
-                    sh 'mvn clean install'
-                }
-            }
         }
     }
-}
+
 
         
     
