@@ -8,28 +8,32 @@ pipeline {
             }
         }
     
- stage('Build and Test Microservices') {
+ stages {
+        stage('Build Users Microservice') {
             steps {
-                script {
-                    // Liste des microservices à traiter
-                    def microservices = ['quizs', 'users', 'jwt']
-
-                    // Itération sur chaque microservice
-                    for (def microservice in microservices) {
-                        echo "Building and testing ${microservice}"
-                        
-                        // Utiliser la commande dir pour changer le répertoire avant d'exécuter le Jenkinsfile
-                        dir(microservice) {
-                            script {
-                                // Exécutez le Jenkinsfile du microservice
-                                build job: 'Jenkinsfile', wait: true
-                            }
-                        }
-                    }
+                dir('users') {
+                    sh 'mvn clean install'
                 }
             }
         }
-
         
+        stage('Build Quizs Microservice') {
+            steps {
+                dir('quizs') {
+                    sh 'mvn clean install'
+                }
+            }
+        }
+        
+        stage('Build JWT Microservice') {
+            steps {
+                dir('jwt') {
+                    sh 'mvn clean install'
+                }
+            }
+        }
     }
 }
+}
+        
+    
