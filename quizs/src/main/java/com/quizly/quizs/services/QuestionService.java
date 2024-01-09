@@ -1,10 +1,14 @@
 package com.quizly.quizs.services;
 
+import com.quizly.quizs.dtos.DtoConv;
+import com.quizly.quizs.dtos.QuestionDto;
 import com.quizly.quizs.models.Question;
+import com.quizly.quizs.models.Quiz;
 import com.quizly.quizs.repositories.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,5 +40,15 @@ public class QuestionService {
     // Delete question by ID
     public void deleteQuestion(Long id) {
         questionRepository.deleteById(id);
+    }
+
+    public List<QuestionDto> getQuestionByQuiz(Quiz quiz) {
+        List<Question> questions = questionRepository.findQuestionsByQuiz(quiz);
+        List<QuestionDto> questionDtos = new ArrayList<>();
+        for(Question question : questions){
+            QuestionDto dto = DtoConv.questionToQuestionDto(question);
+            questionDtos.add(dto);
+        }
+        return questionDtos;
     }
 }

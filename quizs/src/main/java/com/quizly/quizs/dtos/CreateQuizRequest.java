@@ -19,7 +19,7 @@ public class CreateQuizRequest {
     private String title;
     @NotNull
     @JsonProperty("questions")
-    private List<Question> questions;
+    private List<Questionreq> questions;
     @NotNull
     @Min(0)
     @JsonProperty("length")
@@ -44,7 +44,7 @@ public class CreateQuizRequest {
 
 @Data
 @RequiredArgsConstructor
-class Question {
+class Questionreq {
     @NotBlank
     private String text;
     @NotNull

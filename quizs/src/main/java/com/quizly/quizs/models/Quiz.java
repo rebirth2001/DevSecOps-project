@@ -3,10 +3,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-
 import java.time.Instant;
 import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,6 +19,9 @@ public class Quiz {
     private String owner;
     private Instant createdAt;
     private Instant expiresAt;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "quiz")
+    private int attempts;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "quiz", fetch = FetchType.EAGER)
     private List<Question> questions;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "quiz", fetch = FetchType.EAGER)
+    private List<Result> results;
 }
