@@ -7,7 +7,13 @@ pipeline {
                 
             }
         }
-    
+    stage('Build Quizs Microservice') {
+            steps {
+                dir('quizs') {
+                    sh 'mvn clean install'
+                }
+            }
+        }
         stage('Build Users Microservice') {
             steps {
                 dir('users') {
@@ -16,13 +22,7 @@ pipeline {
             }
         }
         
-        stage('Build Quizs Microservice') {
-            steps {
-                dir('quizs') {
-                    sh 'mvn clean install'
-                }
-            }
-        }
+        
         
         stage('Build JWT Microservice') {
             steps {
