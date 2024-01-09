@@ -11,6 +11,7 @@ pipeline {
             steps {
                 dir('eureka') {
                     sh 'mvn clean install'
+                    sh 'docker build -t Quizly/app .'
                 }
             }
         }
