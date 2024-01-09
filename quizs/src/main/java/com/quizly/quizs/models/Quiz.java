@@ -19,7 +19,7 @@ public class Quiz {
     private String owner;
     private Instant createdAt;
     private Instant expiresAt;
-    private int attempts;
+    private Long attempts;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "quiz", fetch = FetchType.EAGER)
     private List<Question> questions;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "quiz", fetch = FetchType.EAGER)

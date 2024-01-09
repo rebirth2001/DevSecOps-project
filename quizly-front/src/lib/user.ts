@@ -1,19 +1,10 @@
 export class User {
-  private accessToken: string;
   private username: string;
-  private refreshToken: string;
   private expiration: number; // expect a value in ms
   private isExpired: boolean;
 
-  constructor(
-    accessToken: string,
-    refreshToken: string,
-    username: string,
-    expiration: number
-  ) {
-    this.accessToken = accessToken;
+  constructor(username: string, expiration: number) {
     this.username = username;
-    this.refreshToken = refreshToken;
     this.expiration = expiration;
     this.isExpired = false;
     setTimeout(this.setIsExpired.bind(this), this.expiration);
@@ -42,5 +33,3 @@ export type UserProfile = {
   joinedAt: string;
   followersCount: number;
 };
-
-

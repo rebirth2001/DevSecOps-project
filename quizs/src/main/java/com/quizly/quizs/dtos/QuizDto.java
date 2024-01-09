@@ -8,11 +8,11 @@ import java.util.List;
 @Data
 public class QuizDto {
     private Long id;
-    private Instant createdAt;
-    private Instant expiresAt;
+    private String createdAt;
+    private String expiresAt;
     private String title;
     private String owner;
-    private int attempts;
+    private Long attempts;
     private List<QuestionDto> questions;
-    private List<ResultDto> results;
+//    private List<ResultDto> results;
 }

@@ -60,8 +60,7 @@ export default function NewQuiz() {
     };
 
     createQuiz(quizData)
-      .then((response) => {
-        console.log(response.status);
+      .then((_) => {
         navigate("/");
       })
       .catch((error: any) => {
@@ -409,11 +408,11 @@ export default function NewQuiz() {
             <Button
               type="dashed"
               size="large"
-              onClick={addQuestion}
+              onClickCapture={addQuestion}
               disabled={quizQuestions.length === MAX_QUESTIONS}
               className="create-quiz-form-button"
             >
-              <PlusCircleOutlined /> Add a question
+              <PlusCircleOutlined onClick={undefined} /> Add a question
             </Button>
           </FormItem>
           <FormItem className="quiz-form-row">
@@ -506,12 +505,12 @@ const QuestionFormElement = (props: QuestionFormElementProps) => {
       <FormItem className="quiz-form-row">
         <Button
           type="dashed"
-          onClick={() => {
+          onClickCapture={() => {
             props.addChoice(props.questionNumber);
           }}
           disabled={props.question.choices.length === MAX_CHOICES}
         >
-          <PlusCircleOutlined /> Add a choice
+          <PlusCircleOutlined onClick={undefined} /> Add a choice
         </Button>
       </FormItem>
     </div>

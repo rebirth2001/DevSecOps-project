@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ChangeEventHandler, useState } from "react";
+import { ChangeEvent } from "react";
 import { Input } from "antd";
 import "./SearchBar.css";
 

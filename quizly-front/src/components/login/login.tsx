@@ -47,7 +47,7 @@ export default function Login(props: LoginProps) {
         <Form onSubmitCapture={handleSubmit} className="login-form">
           <FormItem>
             <Input
-              prefix={<UserOutlined />}
+              prefix={<UserOutlined onClick={undefined} />}
               size="large"
               id="email"
               name="email"
@@ -57,7 +57,7 @@ export default function Login(props: LoginProps) {
           </FormItem>
           <FormItem>
             <Input
-              prefix={<LockOutlined />}
+              prefix={<LockOutlined onClick={undefined} />}
               size="large"
               name="password"
               id="password"

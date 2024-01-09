@@ -16,4 +16,8 @@ public class UserDetailsDto {
     private Instant joinedAt;
     @JsonProperty("followersCount")
     private Long followersCount;
+    @JsonProperty("quizsCreated")
+    private Long quizsCreated;
+    @JsonProperty("quizsTaken")
+    private Long quizsTaken;
 }

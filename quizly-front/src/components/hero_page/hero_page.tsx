@@ -21,7 +21,7 @@ export default function HeroPage() {
             htmlType="button"
             size="large"
             className="button"
-            onClick={signIn}
+            onClickCapture={signIn}
           >
             Log In
           </Button>
@@ -30,7 +30,8 @@ export default function HeroPage() {
             htmlType="button"
             size="large"
             className="button"
-            onClick={register}
+            onClickCapture={register}
+            //onClick={register}
           >
             Register
           </Button>

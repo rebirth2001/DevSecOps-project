@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Instant;
-import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -59,23 +58,24 @@ public class QuizController {
         }
     }
     @GetMapping("/statistics/{user}")
-    public ResponseEntity<?> getUserStatistics(@PathVariable String user){
+    public ResponseEntity<UserQuizsDto> getUserStatistics(@PathVariable(name = "user") String user){
         try {
-            System.out.println("working");
-            int createdQuizzesCount = quizService.countQuizzesByOwner(user);
-            int participatedQuizzesCount = participantService.countParticipationByUsername(user);
-            Map<String, Integer> stats = new HashMap<>();
-            stats.put("createdQuizzes", createdQuizzesCount);
-            stats.put("participatedQuizzes", participatedQuizzesCount);
+            Long createdQuizzesCount = quizService.countQuizzesByOwner(user);
+            Long participatedQuizzesCount = participantService.countParticipationByUsername(user);
+            var stats = UserQuizsDto.builder().quizsCreated(createdQuizzesCount).quizsTaken(participatedQuizzesCount).build();
             return ResponseEntity.ok(stats);
         } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving user statistics");
+            return ResponseEntity.internalServerError().build();
         }
     }
+
     @GetMapping("/quizzes/{owner}")
-    public ResponseEntity<List<QuizDto>> getQuizByOwner(
-            @PathVariable String owner
+    public ResponseEntity<QuizListDto> getQuizByOwner(
+            @PathVariable String owner,
+            @RequestParam(value = "page",defaultValue = 0) int page,
+            @RequestParam(value = "page",defaultValue = 5) int size
     ) {
+        System.out.println(owner);
         try {
             List<Quiz> quizzes = quizService.getQuizByOwner(owner);
             if (quizzes.isEmpty()) {
@@ -90,12 +90,18 @@ public class QuizController {
 
                 // Manually set the Results in QuizDto
                 List<ResultDto> resultDtos = resultService.getResultByQuiz(quiz);
-                quizDto.setResults(resultDtos);
+//                quizDto.setResults(resultDtos);
 
                 return quizDto;
             }).collect(Collectors.toList());
 
-            return new ResponseEntity<>(quizDtos, HttpStatus.OK);
+            var finalDto = QuizListDto.builder()
+                    .quizs(quizDtos)
+                    .page(1L)
+                    .isLast(false)
+                    .build();
+
+            return new ResponseEntity<>(finalDto, HttpStatus.OK);
         } catch (Exception e){
             System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

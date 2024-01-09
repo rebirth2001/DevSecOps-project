@@ -7,7 +7,6 @@ import {
   checkIfUserFollows,
   followUser,
   getUserProfile,
-  getUserQuizProfile,
   unfollowUser,
 } from "../../utils/api";
 import LoadingIndicator from "../common/LoadingIndicator";
@@ -27,8 +26,6 @@ export default function Profile(props: ProfileProps) {
   const params = useParams();
   const requestedUsername = params["username"] || props.currentUser.username;
   const loadUserProfile = (username: string) => {
-    let quizsTaken = 0;
-    let quizsCreated = 0;
     setIsLoading(true);
     if (props.currentUser.username !== requestedUsername) {
       checkIfUserFollows(requestedUsername)
@@ -42,16 +39,6 @@ export default function Profile(props: ProfileProps) {
 
     getUserProfile(username)
       .then(async (response) => {
-        await getUserQuizProfile(username)
-          .then((response) => {
-            quizsCreated = response.quizCreated;
-            quizsTaken = response.quizTaken;
-          })
-          .catch((_) => {
-            //TODO:
-          });
-        response.quizsTaken = quizsTaken;
-        response.quizsCreated = quizsCreated;
         setUser(response);
         setIsLoading(false);
       })
@@ -139,13 +126,13 @@ export default function Profile(props: ProfileProps) {
         <QuizList username={requestedUsername} listType="USER_CREATED_QUIZS" />
       ),
     },
-    {
-      key: "2",
-      label: `${user?.quizsTaken} Quizes taken`,
-      children: (
-        <QuizList username={requestedUsername} listType="USER_TAKEN_QUIZS" />
-      ),
-    },
+    // {
+    //   key: "2",
+    //   label: `${user?.quizsTaken} Quizes taken`,
+    //   children: (
+    //     <QuizList username={requestedUsername} listType="USER_TAKEN_QUIZS" />
+    //   ),
+    // },
   ];
 
   return (
@@ -178,7 +165,7 @@ export default function Profile(props: ProfileProps) {
                   htmlType="button"
                   size="large"
                   className="button"
-                  onClick={(_) => {
+                  onClickCapture={(_) => {
                     handleFollowButtonClick();
                   }}
                 >

@@ -1,9 +1,9 @@
-import { UserProfile } from "../lib/user";
+// import { UserProfile } from "../lib/user";
 
-export const testUser: UserProfile = {
-  username: "test",
-  email: "test@dev.com",
-  joinedAt: "",
-  quizesCount: 0,
-  quizesTaken: 0,
-};
+// export const testUser: UserProfile = {
+//   username: "test",
+//   email: "test@dev.com",
+//   joinedAt: "",
+//   quizsCreated: 0,
+//   quizsTaken: 0,
+// };

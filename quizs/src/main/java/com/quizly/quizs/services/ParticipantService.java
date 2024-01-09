@@ -24,7 +24,7 @@ public class ParticipantService {
         return participantRepository.save(participant);
     }
 
-    public int countParticipationByUsername(String user) {
+    public Long countParticipationByUsername(String user) {
         return participantRepository.countParticipantByNameOfParticipant(user);
     }
 }

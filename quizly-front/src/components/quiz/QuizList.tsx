@@ -6,12 +6,11 @@ import {
 import QuizView from "./Quiz";
 //import { castVote } from "../util/APIUtils";
 import LoadingIndicator from "../common/LoadingIndicator";
-import { Button, notification } from "antd";
+import { Button } from "antd";
 import { QUIZ_LIST_SIZE } from "../../constants";
 import "./QuizList.css";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import { testQuizs } from "../../mock/quizs";
 
 export interface QuizListProps {
   username: string | undefined;
@@ -38,14 +37,14 @@ function QuizList(props: QuizListProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLast, setIsLast] = useState<boolean>(false);
   const [page, setPage] = useState<number>(0);
-  const [size, setSize] = useState<number>(10);
+  //const [size, setSize] = useState<number>(10);
 
   const loadQuizList = (page: number = 0, size: number = QUIZ_LIST_SIZE) => {
     let promise: null | Promise<QuizListResponse> = null;
     if (props.username) {
-      if (props.listType === "USER_CREATED_POLLS") {
+      if (props.listType === "USER_CREATED_QUIZS") {
         promise = getUserCreatedQuizs(props.username, page, size);
-      } else if (props.listType === "USER_VOTED_POLLS") {
+      } else if (props.listType === "USER_TAKEN_QUIZS") {
         promise = getUserTakenQuizs(props.username, page, size);
       }
     } else {
@@ -60,6 +59,7 @@ function QuizList(props: QuizListProps) {
 
     promise
       .then((response) => {
+        console.log(response);
         const currentQuizs = quizs.slice();
         //const currentVotes = currentVotes.slice();
 
@@ -81,7 +81,8 @@ function QuizList(props: QuizListProps) {
         setIsLoading(false);
       })
       .catch((error) => {
-        setQuizs(testQuizs);
+        console.log(error);
+        setQuizs([]);
         setPage(0);
         setIsLast(false);
         setIsLoading(false);
@@ -187,10 +188,11 @@ function QuizList(props: QuizListProps) {
           <span>No quizs Found.</span>
         </div>
       ) : null}
-      {!isLoading && !isLast ? (
+      {!isLoading && !isLast && quizs.length !== 0 ? (
         <div className="load-more-quizs">
-          <Button type="dashed" onClick={handleLoadMore} disabled={isLoading}>
-            <PlusCircleOutlined />
+          // @ts-ignore
+          <Button type="dashed" onClickCapture={handleLoadMore} disabled={isLoading}>
+            <PlusCircleOutlined onClick={undefined} />
             Load more.
           </Button>
         </div>
