@@ -63,8 +63,8 @@ public class QuizController {
     @GetMapping("/quizzes/{owner}")
     public ResponseEntity<QuizListDto> getQuizByOwner(
             @PathVariable String owner,
-            @RequestParam(value = "page",defaultValue = 0) int page,
-            @RequestParam(value = "page",defaultValue = 5) int size
+            @RequestParam(value = "page",defaultValue = "0") int page,
+            @RequestParam(value = "page",defaultValue = "5") int size
     ) {
         System.out.println(owner);
         try {

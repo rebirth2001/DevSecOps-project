@@ -190,8 +190,11 @@ function QuizList(props: QuizListProps) {
       ) : null}
       {!isLoading && !isLast && quizs.length !== 0 ? (
         <div className="load-more-quizs">
-          // @ts-ignore
-          <Button type="dashed" onClickCapture={handleLoadMore} disabled={isLoading}>
+          <Button
+            type="dashed"
+            onClickCapture={handleLoadMore}
+            disabled={isLoading}
+          >
             <PlusCircleOutlined onClick={undefined} />
             Load more.
           </Button>
