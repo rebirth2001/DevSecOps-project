@@ -136,11 +136,7 @@ public class QuizController {
             @RequestParam(defaultValue = "10") int size) {
         System.out.println("Getting quizzes of followers for: " + username);
         try {
-            List<OwnerQuizDto> allQuizzes = quizCache.get(username);
-            if (allQuizzes == null) {
-                allQuizzes = fetchQuizzes(username);
-                quizCache.put(username, allQuizzes);
-            }
+            List<OwnerQuizDto> allQuizzes = fetchQuizzes(username);
 
             if (allQuizzes.isEmpty()) {
                 System.out.println("No quizzes found for followers of: " + username);
@@ -164,6 +160,7 @@ public class QuizController {
             return new ResponseEntity<>("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     private List<OwnerQuizDto> fetchQuizzes(String username) {
         System.out.println("Fetching quizzes for: " + username);
@@ -202,12 +199,6 @@ public class QuizController {
             System.err.println("Exception in fetchQuizzes: " + e.getMessage());
             e.printStackTrace();
         }
-
-        Collections.shuffle(allQuizzes);
-
-        // Update the cache with the new list
-        quizCache.put(username, allQuizzes);
-
         return allQuizzes;
     }
 
