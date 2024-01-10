@@ -149,12 +149,19 @@ export function findUserProfile(username: string): Promise<UserProfile[]> {
 //   });
 // }
 
-export function getAllQuizs(page: number, size: number) {
+export function getAllQuizs(username: string, page: number, size: number) {
   page = page || 0;
   size = size || QUIZ_LIST_SIZE;
 
   return request({
-    url: API_BASE_URL + "/polls?page=" + page + "&size=" + size,
+    url:
+      API_BASE_URL +
+      "/quizs/followers-quizzes/" +
+      username +
+      "?page=" +
+      page +
+      "&size=" +
+      size,
     method: "GET",
   });
 }

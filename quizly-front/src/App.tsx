@@ -85,7 +85,10 @@ function App() {
               path="/"
               element={
                 isAuthenticated ? (
-                  <QuizList username={undefined} listType={undefined} />
+                  <QuizList
+                    username={currentUser?.username}
+                    listType={undefined}
+                  />
                 ) : (
                   <HeroPage />
                 )

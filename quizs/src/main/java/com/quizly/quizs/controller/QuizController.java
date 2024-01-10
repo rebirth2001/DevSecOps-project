@@ -130,10 +130,10 @@ public class QuizController {
     }
 
     @GetMapping("/followers-quizzes/{username}")
-    public ResponseEntity<?> getQuizzesOfFollowers(
+    public ResponseEntity<QuizListDto> getQuizzesOfFollowers(
             @PathVariable String username,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(value = "page",defaultValue = "0") int page,
+            @RequestParam(value = "size",defaultValue = "10") int size) {
         System.out.println("Getting quizzes of followers for: " + username);
         try {
             List<OwnerQuizDto> allQuizzes = quizCache.get(username);
@@ -144,7 +144,10 @@ public class QuizController {
 
             if (allQuizzes.isEmpty()) {
                 System.out.println("No quizzes found for followers of: " + username);
-                return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
+                return new ResponseEntity<>(QuizListDto.builder().quizs(new ArrayList<>())
+                        .page((long)page)
+                        .isLast(true)
+                        .build(), HttpStatus.OK);
             }
 
             int totalQuizzes = allQuizzes.size();
@@ -153,15 +156,25 @@ public class QuizController {
 
             if (startIndex >= totalQuizzes) {
                 System.out.println("Start index out of range for: " + username);
-                return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
+                return new ResponseEntity<>(
+                        QuizListDto.builder().quizs(new ArrayList<>())
+                                .page((long)page)
+                                .isLast(true)
+                                .build(), HttpStatus.OK);
             }
 
             List<OwnerQuizDto> paginatedQuizzes = allQuizzes.subList(startIndex, endIndex);
-            return new ResponseEntity<>(paginatedQuizzes, HttpStatus.OK);
+            System.out.println(paginatedQuizzes.toString());
+            var quizList = QuizListDto.builder()
+                    .quizs(paginatedQuizzes.stream().map(p -> {return p.getQuiz();}).collect(Collectors.toList()))
+                    .page((long) page)
+                    .isLast(paginatedQuizzes.size() < size)
+                    .build();
+            return new ResponseEntity<>(quizList, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println("Error retrieving shuffled paginated quizzes of followers: " + e.getMessage());
             e.printStackTrace();
-            return new ResponseEntity<>("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

@@ -37,18 +37,17 @@ function QuizList(props: QuizListProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLast, setIsLast] = useState<boolean>(false);
   const [page, setPage] = useState<number>(0);
-  //const [size, setSize] = useState<number>(10);
 
-  const loadQuizList = (page: number = 0, size: number = QUIZ_LIST_SIZE) => {
+  const loadQuizList = (page: number = 0, size: number = 1) => {
     let promise: null | Promise<QuizListResponse> = null;
-    if (props.username) {
+    if (props.username && props.listType) {
       if (props.listType === "USER_CREATED_QUIZS") {
         promise = getUserCreatedQuizs(props.username, page, size);
       } else if (props.listType === "USER_TAKEN_QUIZS") {
         promise = getUserTakenQuizs(props.username, page, size);
       }
     } else {
-      promise = getAllQuizs(page, size);
+      promise = getAllQuizs(props.username!, page, size);
     }
 
     if (!promise) {
