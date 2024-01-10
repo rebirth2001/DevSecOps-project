@@ -7,7 +7,6 @@ import QuizView from "./Quiz";
 //import { castVote } from "../util/APIUtils";
 import LoadingIndicator from "../common/LoadingIndicator";
 import { Button } from "antd";
-import { QUIZ_LIST_SIZE } from "../../constants";
 import "./QuizList.css";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
