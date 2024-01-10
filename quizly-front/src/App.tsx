@@ -49,14 +49,14 @@ function App() {
     setIsAuthenticated(false);
     navigate("/");
     notification.success({
-      message: "Success",
+      message: "",
       description: "You're successfully logged out.",
     });
   };
 
   const handleLogin = () => {
     notification.success({
-      message: "Success",
+      message: "",
       description: "You're successfully logged in.",
     });
     loadCurrentUser();

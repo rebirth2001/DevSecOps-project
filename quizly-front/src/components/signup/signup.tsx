@@ -317,12 +317,12 @@ export default function SignUp() {
       .then((response) => {
         if (response.isError) {
           notification.error({
-            message: "Error",
+            message: "",
             description: response.errors.pop(),
           });
         } else {
           notification.success({
-            message: "Success",
+            message: "",
             description:
               "Thank you! You're successfully registered. Please Login to continue!",
           });
@@ -331,7 +331,7 @@ export default function SignUp() {
       })
       .catch((error) => {
         notification.error({
-          message: "Error",
+          message: "",
           description:
             error.message || "Sorry! Something went wrong. Please try again!",
         });

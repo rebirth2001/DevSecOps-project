@@ -24,7 +24,7 @@ export default function Search() {
       })
       .catch((_) => {
         notification.error({
-          message: "Error",
+          message: "",
           description: "Internal server error",
         });
         setIsFetching(false);

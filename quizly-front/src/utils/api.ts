@@ -3,7 +3,7 @@ import { UserProfile } from "../lib/user";
 
 const request = (
   options: RequestOptions,
-  isEmptyResponse: boolean = false
+  dontPaseJson: boolean = false
 ): Promise<any> => {
   const headers: HeadersInit = [["Content-Type", "application/json"]];
 
@@ -25,7 +25,7 @@ const request = (
     if (response.status === 204) {
       return Promise.reject();
     }
-    if (isEmptyResponse) {
+    if (dontPaseJson) {
       return response;
     } else {
       return response.json().then((json) => {
@@ -185,6 +185,16 @@ export function createQuiz(quizData: Quiz): Promise<Response> {
 //     body: JSON.stringify(voteData),
 //   });
 // }
+
+export function getQuizResult(quizId: number): Promise<number> {
+  return request(
+    {
+      url: API_BASE_URL + "/quizs/results/" + quizId,
+      method: "GET",
+    },
+    true
+  );
+}
 
 export function getUserCreatedQuizs(
   username: string,

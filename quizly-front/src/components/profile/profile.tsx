@@ -83,7 +83,7 @@ export default function Profile(props: ProfileProps) {
       followUser(requestedUsername)
         .then((_) => {
           notification.success({
-            message: "Success",
+            message: "",
             description: `You are now following ${requestedUsername}`,
           });
         })
@@ -92,7 +92,7 @@ export default function Profile(props: ProfileProps) {
           setFollows(false);
           setUser({ ...user!, followersCount: --newFollowersCount });
           notification.error({
-            message: "Failure",
+            message: "",
             description: `Couldn't follow ${requestedUsername}`,
           });
         });
@@ -102,7 +102,7 @@ export default function Profile(props: ProfileProps) {
       unfollowUser(requestedUsername)
         .then((_) => {
           notification.success({
-            message: "Success",
+            message: "",
             description: `You are no longer following ${requestedUsername}`,
           });
         })
@@ -111,7 +111,7 @@ export default function Profile(props: ProfileProps) {
           setFollows(true);
           setUser({ ...user!, followersCount: ++newFollowersCount });
           notification.error({
-            message: "Failure",
+            message: "",
             description: `Couldn't unfollow ${requestedUsername}`,
           });
         });

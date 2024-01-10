@@ -69,6 +69,14 @@ public class QuizController {
         }
     }
 
+    @GetMapping("/results/{quizId}")
+    public ResponseEntity<Long> getQuizResult(@PathVariable(name = "quizId") Long quizId){
+        var rand = new Random();
+        var randomNumber =  List.of(24,75,85,50,66).get(rand.nextInt() % 5);
+        return ResponseEntity.ok(Long.valueOf(randomNumber));
+
+    }
+
     @GetMapping("/quizzes/{owner}")
     public ResponseEntity<QuizListDto> getQuizByOwner(
             @PathVariable String owner,
@@ -214,13 +222,6 @@ public class QuizController {
         }
         return allQuizzes;
     }
-
-
-
-
-
-
-
 
 
     @PostMapping("/create")

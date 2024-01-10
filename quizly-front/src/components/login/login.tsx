@@ -27,13 +27,13 @@ export default function Login(props: LoginProps) {
       .catch((error) => {
         if (error.status === 401) {
           notification.error({
-            message: "Quizly Server",
+            message: "",
             description:
               "Your Username or Password is incorrect. Please try again!",
           });
         } else {
           notification.error({
-            message: "Quizly Server",
+            message: "",
             description: "Sorry! Something went wrong. Please try again!",
           });
         }

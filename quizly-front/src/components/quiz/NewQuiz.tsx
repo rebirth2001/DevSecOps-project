@@ -70,7 +70,7 @@ export default function NewQuiz() {
           navigate("/login");
         } else {
           notification.error({
-            message: "Quizly Server",
+            message: "",
             description: error.message || "Something went wrong",
           });
         }

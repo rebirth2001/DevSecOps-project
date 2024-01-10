@@ -6,6 +6,7 @@ import { getAvatarColor } from "../../utils/colors";
 import { formatDateTime } from "../../utils/helpers";
 
 import { Radio, Button } from "antd";
+import { getQuizResult } from "../../utils/api";
 const RadioGroup = Radio.Group;
 
 export interface QuizProps {
@@ -47,7 +48,9 @@ function QuizView(props: QuizProps) {
     } else {
       incrProgress();
       console.log(progress === props.quiz.questions.length - 1);
-      setScore(80);
+      getQuizResult(props.quiz.id);
+      let indx = Math.floor(Math.random() * (4 - 0 + 1) + 0);
+      setScore([80,75,66,90,44,0][indx]);
     }
   };
 
